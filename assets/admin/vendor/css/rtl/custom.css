@@ -1,5 +1,0 @@
-/* Override warna active menu sidebar */
-.bg-menu-theme.menu-vertical .menu-item.active > .menu-link:not(.menu-toggle) {
-    background: #ec4899 !important; /* Ganti #ec4899 dengan warna solid yang kamu mau */
-    box-shadow: none; /* Hapus shadow jika tidak mau, atau biarkan jika suka */
-}

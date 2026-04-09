@@ -17,7 +17,7 @@
 
     <ul class="menu-inner py-1">
         <!-- Dashboards -->
-        <li class="menu-item active">
+        <li class="menu-item <?= ($menu == 'dashboard') ? 'active' : '' ?>">
             <a href="<?= base_url('dashboard') ?>" class="menu-link">
                 <i class="menu-icon tf-icons ti ti-smart-home"></i>
                 <div data-i18n="Dashboard">Dashboard</div>
@@ -28,19 +28,19 @@
         <li class="menu-header small text-uppercase">
             <span class="menu-header-text">Pasien Menu</span>
         </li>
-        <li class="menu-item">
+        <li class="menu-item <?= ($menu == 'deteksiDini') ? 'active' : '' ?>">
             <a href="app-email.html" class="menu-link">
                 <i class="menu-icon tf-icons ti ti-stethoscope"></i>
                 <div data-i18n="Deteksi Dini">Deteksi Dini</div>
             </a>
         </li>
-        <li class="menu-item">
+        <li class="menu-item <?= ($menu == 'hasilDiagnosis') ? 'active' : '' ?>">
             <a href="app-chat.html" class="menu-link">
                 <i class="menu-icon tf-icons ti ti-list-check"></i>
                 <div data-i18n="Hasil Diagnosis">Hasil Diagnosis</div>
             </a>
         </li>
-        <li class="menu-item">
+        <li class="menu-item <?= ($menu == 'edukasi') ? 'active' : '' ?>">
             <a href="app-calendar.html" class="menu-link">
                 <i class="menu-icon tf-icons ti ti-heart-plus"></i>
                 <div data-i18n="Edukasi">Edukasi</div>
@@ -52,23 +52,23 @@
             <span class="menu-header-text">Admin Menu</span>
         </li>
         <!-- Cards -->
-        <li class="menu-item">
-            <a href="javascript:void(0);" class="menu-link">
+        <li class="menu-item <?= ($menu == 'pasien') ? 'active' : '' ?>">
+            <a href="<?= base_url('pasien') ?>" class="menu-link">
                 <i class="menu-icon tf-icons ti ti-user-search"></i>
                 <div data-i18n="Data Pasien">Data Pasien</div>
                 <div class="badge bg-label-primary rounded-pill ms-auto">6</div>
             </a>
         </li>
         <!-- User interface -->
-        <li class="menu-item">
-            <a href="javascript:void(0)" class="menu-link">
+        <li class="menu-item <?= ($menu == 'gejala') ? 'active' : '' ?>">
+            <a href="<?= base_url('gejala') ?>" class="menu-link">
                 <i class="menu-icon tf-icons ti ti-list-details"></i>
                 <div data-i18n="Data Gejala">Data Gejala</div>
             </a>
         </li>
 
         <!-- Extended components -->
-        <li class="menu-item">
+        <li class="menu-item <?= ($menu == 'resiko') ? 'active' : '' ?>">
             <a href="javascript:void(0)" class="menu-link">
                 <i class="menu-icon tf-icons ti ti-heart-broken"></i>
                 <div data-i18n="Data Resiko">Data Resiko</div>
@@ -76,7 +76,7 @@
         </li>
 
         <!-- Icons -->
-        <li class="menu-item">
+        <li class="menu-item <?= ($menu == 'basisRule') ? 'active' : '' ?>">
             <a href="javascript:void(0)" class="menu-link">
                 <i class="menu-icon tf-icons ti ti-settings"></i>
                 <div data-i18n="Basis Rule">Basis Rule</div>
@@ -88,7 +88,7 @@
             <span class="menu-header-text">Pengaturan</span>
         </li>
         <!-- Forms -->
-        <li class="menu-item">
+        <li class="menu-item <?= ($menu == 'users') ? 'active' : '' ?>">
             <a href="javascript:void(0);" class="menu-link">
                 <i class="menu-icon tf-icons ti ti-users"></i>
                 <div data-i18n="Users">Users</div>

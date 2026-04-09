@@ -17,8 +17,15 @@
 <script src="<?= $assets_admin ?>vendor/libs/swiper/swiper.js"></script>
 <script src="<?= $assets_admin ?>vendor/libs/datatables-bs5/datatables-bootstrap5.js"></script>
 
+<!-- SweetAlert2 (confirm dialog) -->
+<script src="<?= $assets_admin ?>vendor/libs/sweetalert2/sweetalert2.js"></script>
+
 <!-- Main JS -->
 <script src="<?= $assets_admin ?>js/main.js"></script>
 
+<!-- Global confirm dialogs -->
+<script src="<?= $assets_admin ?>js/confirm-delete.js"></script>
+
 <!-- Page JS -->
 <script src="<?= $assets_admin ?>js/dashboards-analytics.js"></script>
+<script src="<?= $assets_admin ?>js/toasts-custom.js"></script>

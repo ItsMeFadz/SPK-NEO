@@ -8,96 +8,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
         rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="<?= base_url('assets/landing/css/core.css') ?>">
 
-    <style>
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: #f1f1f1;
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: #ec4899;
-            border-radius: 10px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: #be185d;
-        }
-
-        .glass {
-            background: rgba(255, 255, 255, 0.7);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-        }
-
-        .glass-card {
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
-        }
-
-        .gradient-text {
-            background: linear-gradient(to right, #ec4899, #8b5cf6);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .input-modern {
-            background-color: rgba(255, 255, 255, 0.9);
-            border: 2px solid transparent;
-            transition: all 0.3s ease;
-        }
-
-        .input-modern:focus {
-            background-color: #fff;
-            border-color: #ec4899;
-            box-shadow: 0 0 0 4px rgba(236, 72, 153, 0.1);
-        }
-
-        .bg-blobs {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            z-index: -1;
-            background: #fdf2f8;
-        }
-
-        .blob {
-            position: absolute;
-            background: linear-gradient(180deg, rgba(236, 72, 153, 0.3) 0%, rgba(139, 92, 246, 0.3) 100%);
-            border-radius: 50%;
-            filter: blur(80px);
-            opacity: 0.7;
-            animation: blob 10s infinite alternate;
-        }
-
-        /* Mobile menu (avoid Tailwind CDN runtime-class issues) */
-        #side-nav {
-            transform: translateX(100%);
-            opacity: 0;
-            pointer-events: none;
-        }
-
-        #side-nav.is-open {
-            transform: translateX(0);
-            opacity: 1;
-            pointer-events: auto;
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-            #side-nav {
-                transition: none !important;
-            }
-        }
-    </style>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
 <body class="text-gray-700 antialiased selection:bg-pink-200 selection:text-pink-900">
@@ -135,7 +49,7 @@
             </button>
 
             <div id="side-nav"
-                class="fixed inset-0 w-full h-screen bg-white/80 backdrop-blur-2xl transform translate-x-full transition-all duration-500 ease-in-out z-50 flex flex-col items-center justify-center">
+                class="fixed inset-0 w-full h-screen bg-white/80 backdrop-blur-2xl z-50 flex flex-col items-center justify-center">
                 <div class="absolute top-20 left-10 w-64 h-64 bg-pink-200/30 blur-3xl rounded-full -z-10 animate-blob">
                 </div>
                 <div
@@ -174,18 +88,6 @@
             </div>
         </div>
     </header>
-    <script>
-        window.onscroll = function () {
-            const header = document.getElementById('main-header');
-            if (window.scrollY > 50) {
-                header.classList.add('py-1.5', 'shadow-md', 'bg-white/95');
-                header.classList.remove('py-3', 'bg-white/80');
-            } else {
-                header.classList.remove('py-1.5', 'shadow-md', 'bg-white/95');
-                header.classList.add('py-3', 'bg-white/80');
-            }
-        };
-    </script>
 
     <main class="container mx-auto px-6 pt-10 pb-20 max-w-7xl relative z-10">
 
@@ -282,8 +184,6 @@
 
                 </div>
             </div>
-            </div>
-            </div>
             <div class="col-span-full mt-12 flex justify-center">
                 <a href="<?= base_url('referensi') ?>">
                     <button
@@ -349,28 +249,6 @@
             </div>
         </section>
 
-        <style>
-            html {
-                scroll-behavior: smooth;
-            }
-
-            @keyframes bounce-slow {
-
-                0%,
-                100% {
-                    transform: translateY(0);
-                }
-
-                50% {
-                    transform: translateY(-15px);
-                }
-            }
-
-            .animate-bounce-slow {
-                animation: bounce-slow 4s ease-in-out infinite;
-            }
-        </style>
-
         <section class="mb-24" id="gejala">
             <div class="text-center mb-12">
                 <h2 class="text-4xl font-extrabold text-gray-800">Kenali <span class="gradient-text">Gejala Awal</span>
@@ -408,14 +286,14 @@
                     </div>
                 <?php endforeach; ?>
                 <div class="col-span-full mt-12 flex justify-center">
-                    <button onclick="window.location.href='referensi.php'"
+                    <a href="<?= base_url('referensi') ?>"
                         class="relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium text-gray-900 rounded-2xl group bg-gradient-to-br from-pink-500 to-purple-500 group-hover:from-pink-500 group-hover:to-purple-500 hover:text-white focus:outline-none">
                         <span
                             class="relative px-8 py-4 transition-all ease-in duration-75 bg-white rounded-2xl group-hover:bg-opacity-0 font-bold flex items-center gap-2">
                             <i class="fas fa-file-pdf"></i>
                             Lihat Referensi Jurnal Gejala
                         </span>
-                    </button>
+                    </a>
                 </div>
             </div>
         </section>
@@ -439,18 +317,15 @@
                         class="flex-1 py-2 text-sm font-bold z-10 transition-colors duration-300 text-gray-500">DAFTAR</button>
                 </div>
 
-                <section id="login-form">
-                    <form action="#auth-container" method="POST" class="space-y-5" novalidate>
-                        <input type="hidden" name="action" value="login">
-
+                <section>
+                    <form id="login-form" method="post" action="<?= base_url('auth/process') ?>" class="space-y-5">
                         <div>
                             <label class="block font-bold mb-1 text-xs uppercase text-gray-500 tracking-wider">Nama
                                 Pengguna</label>
                             <div class="relative">
                                 <i class="fas fa-user absolute left-3 top-3.5 text-gray-400"></i>
-                                <input type="text" name="name" placeholder="Nama Pengguna"
-                                    class="w-full pl-10 pr-4 py-3 rounded-xl input-modern text-sm font-semibold"
-                                    style="text-transform: uppercase;" required>
+                                <input type="text" name="username" placeholder="Nama Pengguna"
+                                    class="w-full pl-10 pr-4 py-3 rounded-xl input-modern text-sm font-semibold" required>
                             </div>
                         </div>
                         <div>
@@ -463,21 +338,11 @@
                                     required>
                             </div>
                         </div>
-                        <div>
-                            <label
-                                class="block font-bold mb-1 text-xs uppercase text-gray-500 tracking-wider">Peran</label>
-                            <div class="relative">
-                                <i class="fas fa-id-badge absolute left-3 top-3.5 text-gray-400"></i>
-                                <select name="role_login" required
-                                    class="w-full pl-10 pr-4 py-3 rounded-xl input-modern text-sm font-semibold cursor-pointer appearance-none bg-white">
-                                    <option value="">-- Pilih Peran --</option>
-                                    <option value="pasien">Pasien</option>
-                                    <option value="admin">Admin</option>
-                                </select>
-                                <i
-                                    class="fas fa-chevron-down absolute right-3 top-3.5 text-gray-400 pointer-events-none"></i>
-                            </div>
-                        </div>
+                        <?php if ($this->session->flashdata('error')): ?>
+                            <p style="color:red;">
+                                <?= $this->session->flashdata('error'); ?>
+                            </p>
+                        <?php endif; ?>
 
                         <button type="submit"
                             class="w-full bg-gradient-to-r from-pink-500 to-purple-600 text-white font-bold py-3.5 rounded-xl hover:shadow-lg hover:shadow-pink-500/40 transition transform hover:-translate-y-0.5 focus:outline-none focus:ring-4 focus:ring-pink-300 mt-2">
@@ -487,8 +352,7 @@
                 </section>
 
                 <section id="register-form" class="hidden">
-                    <form action="#auth-container" method="POST" class="space-y-4" novalidate>
-                        <input type="hidden" name="action" value="register">
+                    <form action="<?= base_url('auth/register') ?>" method="POST" class="space-y-4">
 
                         <div>
                             <label class="block font-bold mb-1 text-xs uppercase text-gray-500 tracking-wider">Nama
@@ -506,7 +370,7 @@
                                 Lahir</label>
                             <div class="relative">
                                 <i class="fas fa-calendar-day absolute left-3 top-3.5 text-gray-400"></i>
-                                <input type="date" name="tanggal_lahir" id="tgl_lahir"
+                                <input type="date" name="tgl_lahir" id="tgl_lahir"
                                     class="w-full pl-10 pr-4 py-3 rounded-xl input-modern text-sm font-semibold text-gray-600 focus:text-gray-900"
                                     required>
                             </div>
@@ -546,21 +410,6 @@
                             </div>
                         </div>
 
-                        <div>
-                            <label class="block font-bold mb-1 text-xs uppercase text-gray-500 tracking-wider">Daftar
-                                Sebagai</label>
-                            <div class="relative">
-                                <i class="fas fa-id-card absolute left-3 top-3.5 text-gray-400"></i>
-                                <select name="role_login" required
-                                    class="w-full pl-10 pr-4 py-3 rounded-xl input-modern text-sm font-semibold cursor-pointer appearance-none bg-white">
-                                    <option value="pasien">Pasien</option>
-                                    <option value="admin" disabled>Admin (Tidak Diizinkan)</option>
-                                </select>
-                                <i
-                                    class="fas fa-chevron-down absolute right-3 top-3.5 text-gray-400 pointer-events-none"></i>
-                            </div>
-                        </div>
-
                         <button type="submit"
                             class="w-full bg-gradient-to-r from-gray-800 to-gray-900 text-white font-bold py-3.5 rounded-xl hover:shadow-lg hover:shadow-gray-500/40 transition transform hover:-translate-y-0.5 focus:outline-none mt-2">
                             DAFTAR AKUN BARU
@@ -575,138 +424,7 @@
         &copy; <?php echo date('Y'); ?> SI-NEO System. All rights reserved.
     </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
-                    },
-                    colors: {
-                        rose: { 50: '#fff1f2', 100: '#ffe4e6', 500: '#f43f5e', 600: '#e11d48' },
-                        brand: { start: '#ec4899', end: '#8b5cf6' }
-                    },
-                    animation: {
-                        blob: "blob 7s infinite",
-                        'float': 'float 6s ease-in-out infinite',
-                    },
-                    keyframes: {
-                        blob: {
-                            "0%": { transform: "translate(0px, 0px) scale(1)" },
-                            "33%": { transform: "translate(30px, -50px) scale(1.1)" },
-                            "66%": { transform: "translate(-20px, 20px) scale(0.9)" },
-                            "100%": { transform: "translate(0px, 0px) scale(1)" },
-                        },
-                        float: {
-                            '0%, 100%': { transform: 'translateY(0)' },
-                            '50%': { transform: 'translateY(-20px)' },
-                        }
-                    },
-                },
-            },
-        }
-    </script>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // Mobile menu
-            const menuBtn = document.getElementById('menu-btn');
-            const sideNav = document.getElementById('side-nav');
-            const menuIcon = document.getElementById('menu-icon');
-
-            const openMenu = () => {
-                if (!sideNav || !menuIcon || !menuBtn) return;
-                sideNav.classList.add('is-open');
-                menuIcon.classList.remove('fa-bars-staggered');
-                menuIcon.classList.add('fa-xmark');
-                menuBtn.setAttribute('aria-expanded', 'true');
-                menuBtn.setAttribute('aria-label', 'Tutup menu');
-                sideNav.setAttribute('aria-hidden', 'false');
-                document.body.style.overflow = 'hidden';
-            };
-
-            const closeMenu = () => {
-                if (!sideNav || !menuIcon || !menuBtn) return;
-                sideNav.classList.remove('is-open');
-                menuIcon.classList.add('fa-bars-staggered');
-                menuIcon.classList.remove('fa-xmark');
-                menuBtn.setAttribute('aria-expanded', 'false');
-                menuBtn.setAttribute('aria-label', 'Buka menu');
-                sideNav.setAttribute('aria-hidden', 'true');
-                document.body.style.overflow = '';
-            };
-
-            if (menuBtn && sideNav && menuIcon) {
-                const navLinks = sideNav.querySelectorAll('.nav-link');
-
-                const toggleMenu = () => {
-                    if (sideNav.classList.contains('is-open')) closeMenu();
-                    else openMenu();
-                };
-
-                sideNav.setAttribute('aria-hidden', 'true');
-                menuBtn.addEventListener('click', toggleMenu);
-
-                sideNav.addEventListener('click', (e) => {
-                    if (e.target === sideNav) closeMenu();
-                });
-
-                navLinks.forEach((link) => link.addEventListener('click', closeMenu));
-
-                document.addEventListener('keydown', (e) => {
-                    if (e.key === 'Escape') closeMenu();
-                });
-            }
-
-            // Login/Register tabs
-            const tabLogin = document.getElementById('tab-login');
-            const tabRegister = document.getElementById('tab-register');
-            const tabIndicator = document.getElementById('tab-indicator');
-            const loginForm = document.getElementById('login-form');
-            const registerForm = document.getElementById('register-form');
-            const showLoginOnLoad = <?= json_encode(isset($show_login_on_load) ? (bool) $show_login_on_load : true) ?>;
-
-            if (tabLogin && tabRegister && tabIndicator && loginForm && registerForm) {
-                const setTabs = (isLogin) => {
-                    tabIndicator.style.transform = isLogin ? 'translateX(0%)' : 'translateX(100%)';
-
-                    tabLogin.classList.toggle('text-pink-600', isLogin);
-                    tabLogin.classList.toggle('text-gray-500', !isLogin);
-                    tabRegister.classList.toggle('text-pink-600', !isLogin);
-                    tabRegister.classList.toggle('text-gray-500', isLogin);
-
-                    loginForm.classList.toggle('hidden', !isLogin);
-                    registerForm.classList.toggle('hidden', isLogin);
-                };
-
-                tabLogin.addEventListener('click', () => setTabs(true));
-                tabRegister.addEventListener('click', () => setTabs(false));
-
-                setTabs(!!showLoginOnLoad);
-            }
-
-            // Hitung usia otomatis
-            const tglLahir = document.getElementById('tgl_lahir');
-            const usia = document.getElementById('usia');
-            if (tglLahir && usia) {
-                tglLahir.addEventListener('change', () => {
-                    if (!tglLahir.value) return;
-                    const dob = new Date(tglLahir.value);
-                    const today = new Date();
-                    let age = today.getFullYear() - dob.getFullYear();
-                    const monthDiff = today.getMonth() - dob.getMonth();
-
-                    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < dob.getDate())) {
-                        age--;
-                    }
-
-                    usia.value = Math.max(0, age);
-                });
-            }
-        });
-    </script>
+    <script src="<?= base_url('assets/landing/js/main.js') ?>"></script>
 
 </body>
 

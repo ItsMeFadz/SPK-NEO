@@ -12,6 +12,7 @@
 
 <body>
     <!-- Layout wrapper -->
+    <ul class="notifications"></ul>
     <div class="layout-wrapper layout-content-navbar">
         <div class="layout-container">
             <!-- Menu -->
@@ -59,6 +60,20 @@
 
     <!-- Core JS -->
     <?php $this->load->view('admin/layouts/javascript'); ?>
+
+    <script>
+        window.addEventListener("load", function () {
+    <?php if ($this->session->flashdata('success')): ?>
+                    toastDetails.success.text = <?= json_encode($this->session->flashdata('success')) ?>;
+                createToast('success');
+    <?php endif; ?>
+
+    <?php if ($this->session->flashdata('error')): ?>
+                    toastDetails.error.text = <?= json_encode($this->session->flashdata('error')) ?>;
+                createToast('error');
+    <?php endif; ?>
+});
+    </script>
 </body>
 
 </html>
