@@ -29,3 +29,4 @@
 <!-- Page JS -->
 <script src="<?= $assets_admin ?>js/dashboards-analytics.js"></script>
 <script src="<?= $assets_admin ?>js/toasts-custom.js"></script>
+<script src="<?= $assets_admin ?>js/pagination-custom.js"></script>

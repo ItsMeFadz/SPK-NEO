@@ -15,26 +15,28 @@
                     <th class="text-center">Aksi</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody id="table-body" style="display: none;">
                 <?php if (!empty($gejala)): ?>
                     <?php foreach ($gejala as $i => $row): ?>
                         <tr>
                             <th scope="row"><?= $i + 1 ?></th>
                             <td><?= html_escape($row->kode) ?></td>
                             <td><?= html_escape($row->name) ?></td>
-                            <td class="text-center d-flex justify-content-center gap-2">
-                                <a href="<?= base_url('gejala/edit/' . $row->id) ?>" class="btn btn-sm btn-icon btn-label-info"
-                                    title="Edit">
-                                    <i class="tf-icons ti ti-edit"></i>
-                                </a>
-                                <form method="post" action="<?= base_url('gejala/delete/' . $row->id) ?>"
-                                    class="d-inline js-delete-form m-0 p-0">
-                                    <button type="button" class="btn btn-sm btn-icon btn-label-danger js-confirm-delete"
-                                        title="Hapus" data-kode="<?= html_escape($row->kode) ?>"
-                                        data-name="<?= html_escape($row->name) ?>">
-                                        <i class="tf-icons ti ti-square-minus"></i>
-                                    </button>
-                                </form>
+                            <td class="text-center">
+                                <div class="d-flex justify-content-center gap-2">
+                                        <a href="<?= base_url('gejala/edit/' . $row->id) ?>" class="btn btn-sm btn-icon btn-label-info"
+                                        title="Edit">
+                                        <i class="tf-icons ti ti-edit"></i>
+                                    </a>
+                                    <form method="post" action="<?= base_url('gejala/delete/' . $row->id) ?>"
+                                        class="d-inline js-delete-form m-0 p-0">
+                                        <button type="button" class="btn btn-sm btn-icon btn-label-danger js-confirm-delete"
+                                            title="Hapus" data-kode="<?= html_escape($row->kode) ?>"
+                                            data-name="<?= html_escape($row->name) ?>">
+                                            <i class="tf-icons ti ti-square-minus"></i>
+                                        </button>
+                                    </form>
+                                </div>
                             </td>
                         </tr>
                     <?php endforeach; ?>
@@ -45,5 +47,8 @@
                 <?php endif; ?>
             </tbody>
         </table>
+        <nav aria-label="Page navigation" class="mt-3 d-flex justify-content-end me-3">
+            <ul id="pagination" class="pagination pagination-sm"></ul>
+        </nav>
     </div>
 </div>

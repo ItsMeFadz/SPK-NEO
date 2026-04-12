@@ -68,10 +68,10 @@
         </li>
 
         <!-- Extended components -->
-        <li class="menu-item <?= ($menu == 'resiko') ? 'active' : '' ?>">
-            <a href="javascript:void(0)" class="menu-link">
+        <li class="menu-item <?= ($menu == 'risiko') ? 'active' : '' ?>">
+            <a href="<?= base_url('risiko') ?>" class="menu-link">
                 <i class="menu-icon tf-icons ti ti-heart-broken"></i>
-                <div data-i18n="Data Resiko">Data Resiko</div>
+                <div data-i18n="Data Risiko">Data Risiko</div>
             </a>
         </li>
 

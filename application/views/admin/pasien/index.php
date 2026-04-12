@@ -11,7 +11,7 @@
                     <th>Table heading</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody id="table-body">
                 <tr>
                     <th scope="row">1</th>
                     <td>Table cell</td>
@@ -36,4 +36,7 @@
             </tbody>
         </table>
     </div>
+    <nav aria-label="Page navigation" class="mt-3 d-flex justify-content-end me-3">
+        <ul id="pagination" class="pagination pagination-sm"></ul>
+    </nav>
 </div>
