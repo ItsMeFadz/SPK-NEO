@@ -5,7 +5,11 @@
 
     const kode = button.getAttribute('data-kode') || '';
     const name = button.getAttribute('data-name') || '';
-    if (kode || name) return `Hapus gejala ${kode} - ${name} ?`;
+    // if (kode || name) return `Hapus ${kode} - ${name} ?`;
+    if (kode || name) {
+      return `Hapus <strong>${kode}</strong> - <strong>${name}</strong> ?`;
+    }
+
     return 'Yakin ingin menghapus data ini?';
   };
 
@@ -35,7 +39,7 @@
 
       window.Swal.fire({
         title,
-        text,
+        html: text,
         icon,
         showDenyButton: false,
         denyButtonText: '',
