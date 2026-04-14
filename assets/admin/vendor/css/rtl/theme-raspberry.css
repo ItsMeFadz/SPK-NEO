@@ -260,18 +260,18 @@ button.list-group-item-primary.active {
 }
 
 .table-primary {
-  --bs-table-bg: #fdebf2;
+  --bs-table-bg: #EC4899;
   --bs-table-striped-bg: #f9e8ef;
-  --bs-table-striped-color: #4b465c;
+  --bs-table-striped-color: #EC4899;
   --bs-table-active-bg: #efdee6;
-  --bs-table-active-color: #4b465c;
+  --bs-table-active-color: #EC4899;
   --bs-table-hover-bg: #f6e4ec;
-  --bs-table-hover-color: #4b465c;
-  color: #4b465c;
+  --bs-table-hover-color: #EC4899;
+  color: #EC4899;
   border-color: #d9cad4;
 }
 .table-primary .btn-icon {
-  color: #4b465c;
+  color: #EC4899;
 }
 
 .btn-primary {

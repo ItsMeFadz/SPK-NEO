@@ -1808,21 +1808,21 @@ progress {
 }
 
 .table-primary {
-  --bs-table-color: #4b465c;
-  --bs-table-bg: #f4f3fe;
+  --bs-table-color: #EC4899;
+  --bs-table-bg: #EC4899;
   --bs-table-border-color: #d2d0de;
   --bs-table-striped-bg: #f1f0fb;
-  --bs-table-striped-color: #4b465c;
+  --bs-table-striped-color: #EC4899;
   --bs-table-active-bg: #e6e5f1;
-  --bs-table-active-color: #4b465c;
+  --bs-table-active-color: #EC4899;
   --bs-table-hover-bg: #edecf8;
-  --bs-table-hover-color: #4b465c;
-  color: var(--bs-table-color);
-  border-color: var(--bs-table-border-color);
+  --bs-table-hover-color: #EC4899;
+  color: #f4f3fe;
+  border-color: #f4f3fe;
 }
 
 .table-secondary {
-  --bs-table-color: #4b465c;
+  --bs-table-color: #e30b5c;
   --bs-table-bg: #f8f8f9;
   --bs-table-border-color: #d5d4da;
   --bs-table-striped-bg: #f5f4f6;
@@ -1907,16 +1907,16 @@ progress {
 
 .table-dark {
   --bs-table-color: #fff;
-  --bs-table-bg: #4b4b4b;
+  --bs-table-bg: #EC4899;
   --bs-table-border-color: #6f6f6f;
-  --bs-table-striped-bg: #4f4f4f;
+  --bs-table-striped-bg: #EC4899;
   --bs-table-striped-color: #fff;
-  --bs-table-active-bg: #595959;
+  --bs-table-active-bg: #EC4899;
   --bs-table-active-color: #fff;
-  --bs-table-hover-bg: #525252;
+  --bs-table-hover-bg: #EC4899;
   --bs-table-hover-color: #fff;
-  color: var(--bs-table-color);
-  border-color: var(--bs-table-border-color);
+  color: #EC4899;
+  border-color: #EC4899;
 }
 
 .table-responsive {
@@ -6577,15 +6577,15 @@ a.invert-bg-dark:hover, a.invert-bg-dark:focus {
 }
 
 .table-dark {
-  --bs-table-bg: #4b4b4b;
-  --bs-table-striped-bg: #4f4f4f;
+  --bs-table-bg: #EC4899;
+  --bs-table-striped-bg: #EC4899;
   --bs-table-striped-color: #fff;
-  --bs-table-active-bg: #595959;
+  --bs-table-active-bg: #EC4899;
   --bs-table-active-color: #fff;
-  --bs-table-hover-bg: #525252;
+  --bs-table-hover-bg: #EC4899;
   --bs-table-hover-color: #fff;
   color: #fff;
-  border-color: #6f6f6f;
+  border-color: #EC4899;
 }
 .table-dark .btn-icon {
   color: #fff;
@@ -11363,7 +11363,7 @@ html:not([dir=rtl]) .card .card-separator {
 }
 
 .border-top {
-  border-top: 1px solid #dbdade !important;
+  border-top: 1px solid #EC4899 !important;
 }
 
 .border-top-0 {

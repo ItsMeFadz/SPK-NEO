@@ -76,8 +76,8 @@
         </li>
 
         <!-- Icons -->
-        <li class="menu-item <?= ($menu == 'basisRule') ? 'active' : '' ?>">
-            <a href="javascript:void(0)" class="menu-link">
+        <li class="menu-item <?= ($menu == 'rule') ? 'active' : '' ?>">
+            <a href="<?= base_url('rule') ?>" class="menu-link">
                 <i class="menu-icon tf-icons ti ti-settings"></i>
                 <div data-i18n="Basis Rule">Basis Rule</div>
             </a>
@@ -88,8 +88,8 @@
             <span class="menu-header-text">Pengaturan</span>
         </li>
         <!-- Forms -->
-        <li class="menu-item <?= ($menu == 'users') ? 'active' : '' ?>">
-            <a href="javascript:void(0);" class="menu-link">
+        <li class="menu-item <?= ($menu == 'user') ? 'active' : '' ?>">
+            <a href="<?= base_url('user') ?>" class="menu-link">
                 <i class="menu-icon tf-icons ti ti-users"></i>
                 <div data-i18n="Users">Users</div>
             </a>

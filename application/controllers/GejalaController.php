@@ -66,10 +66,11 @@ class GejalaController extends MY_Controller
         $data = [
             'kode' => $this->input->post('kode'),
             'name' => $this->input->post('name'),
+            'deskripsi' => $this->input->post('deskripsi'),
         ];
 
-        if (empty($data['kode']) || empty($data['name'])) {
-            $this->session->set_flashdata('error', 'Kode dan nama gejala wajib diisi');
+        if (empty($data['kode']) || empty($data['name']) || empty($data['deskripsi'])) {
+            $this->session->set_flashdata('error', 'Semua field wajib diisi');
             redirect('gejala/create');
             return;
         }
@@ -100,10 +101,11 @@ class GejalaController extends MY_Controller
         $data = [
             'kode' => $this->input->post('kode'),
             'name' => $this->input->post('name'),
+            'deskripsi' => $this->input->post('deskripsi'),
         ];
 
-        if (empty($data['kode']) || empty($data['name'])) {
-            $this->session->set_flashdata('error', 'Kode dan nama gejala wajib diisi');
+        if (empty($data['kode']) || empty($data['name']) || empty($data['deskripsi'])) {
+            $this->session->set_flashdata('error', 'Semua field wajib diisi');
             redirect('gejala/edit/' . $id);
             return;
         }

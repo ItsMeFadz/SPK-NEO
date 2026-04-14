@@ -44,6 +44,7 @@
 
     <!-- Page CSS -->
     <link rel="stylesheet" href="<?= $assets_admin ?>vendor/css/pages/cards-advance.css" />
+    <link rel="stylesheet" href="<?= $assets_admin ?>vendor/css/pages/page-profile.css" />
     <!-- Helpers -->
     <script src="<?= $assets_admin ?>vendor/js/helpers.js"></script>
 

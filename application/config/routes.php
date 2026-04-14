@@ -30,3 +30,19 @@ $route['risiko/store'] = 'RisikoController/store';
 $route['risiko/edit/(:num)'] = 'RisikoController/edit/$1';
 $route['risiko/update/(:num)'] = 'RisikoController/update/$1';
 $route['risiko/delete/(:num)'] = 'RisikoController/delete/$1';
+
+// Rule
+$route['rule'] = 'RuleController';
+$route['rule/create'] = 'RuleController/create';
+$route['rule/store'] = 'RuleController/store';
+$route['rule/edit/(:num)'] = 'RuleController/edit/$1';
+$route['rule/update/(:num)'] = 'RuleController/update/$1';
+$route['rule/delete/(:num)'] = 'RuleController/delete/$1';
+
+// User
+$route['user'] = 'UserController';
+$route['user/create'] = 'UserController/create';
+$route['user/store'] = 'UserController/store';
+$route['user/edit/(:num)'] = 'UserController/edit/$1';
+$route['user/update/(:num)'] = 'UserController/update/$1';
+$route['user/delete/(:num)'] = 'UserController/delete/$1';

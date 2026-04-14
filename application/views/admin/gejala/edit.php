@@ -11,6 +11,10 @@
                     <label class="form-label" for="basic-default-name">Nama Gejala</label>
                     <input type="text" name="name" class="form-control" placeholder="Demam" value="<?= html_escape($gejala->name) ?>" required />
                 </div>
+                <div class="mb-3 col-md-12">
+                    <label class="form-label" for="basic-default-name">Deskripsi</label>
+                    <textarea type="text" name="deskripsi" class="form-control" placeholder="Deskripsi gejala" rows="3"><?= html_escape($gejala->deskripsi) ?></textarea>
+                </div>
                 <div class="row">
                     <div class="col-12 d-flex gap-2">
                         <button type="submit" class="btn btn-primary">Update</button>

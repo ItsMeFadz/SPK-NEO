@@ -9,7 +9,11 @@
                 </div>
                 <div class="mb-3 col-md-6">
                     <label class="form-label" for="basic-default-name">Nama Gejala</label>
-                    <input type="text" name="name" class="form-control" placeholder="Demam" />
+                    <input type="text" name="name" class="form-control" placeholder="Benjolan di area payudara" />
+                </div>
+                <div class="mb-3 col-md-12">
+                    <label class="form-label" for="basic-default-name">Deskripsi</label>
+                    <textarea type="text" name="deskripsi" class="form-control" placeholder="Deskripsi gejala" rows="3"></textarea>
                 </div>
                 <div class="row">
                     <div class="col-12 d-flex gap-2">
