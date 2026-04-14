@@ -785,5 +785,89 @@
             </div>
         </div>
     </div>
-    <!--/ Projects table -->
+    <div class="card card-action mb-4">
+        <div class="card-header align-items-center">
+            <h5 class="card-action-title mb-0">Payment Methods</h5>
+            <div class="card-action-element">
+                <button class="btn btn-primary btn-sm" type="button" data-bs-toggle="modal"
+                    data-bs-target="#addNewCCModal">
+                    <i class="ti ti-plus ti-xs me-1"></i>Add Card
+                </button>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="added-cards">
+                <div class="cardMaster border p-3 rounded mb-3">
+                    <div class="d-flex justify-content-between flex-sm-row flex-column">
+                        <div class="card-information">
+                            <img class="mb-3 img-fluid" src="../../assets/img/icons/payments/mastercard.png"
+                                alt="Master Card" />
+                            <h6 class="mb-2 pt-1">Kaith Morrison</h6>
+                            <span class="card-number">&#8727;&#8727;&#8727;&#8727; &#8727;&#8727;&#8727;&#8727;
+                                &#8727;&#8727;&#8727;&#8727;
+                                9856</span>
+                        </div>
+                        <div class="d-flex flex-column text-start text-lg-end">
+                            <div class="d-flex order-sm-0 order-1 mt-3">
+                                <button class="btn btn-label-primary me-3" data-bs-toggle="modal"
+                                    data-bs-target="#editCCModal">
+                                    Edit
+                                </button>
+                                <button class="btn btn-label-secondary">Delete</button>
+                            </div>
+                            <small class="mt-sm-auto mt-2 order-sm-1 order-0">Card expires at 12/26</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="cardMaster border p-3 rounded mb-3">
+                    <div class="d-flex justify-content-between flex-sm-row flex-column">
+                        <div class="card-information">
+                            <img class="mb-3 img-fluid" src="../../assets/img/icons/payments/visa.png"
+                                alt="Master Card" />
+                            <div class="d-flex align-items-center mb-2 pt-1">
+                                <h6 class="mb-0 me-3">Tom McBride</h6>
+                                <span class="badge bg-label-primary me-1">Primary</span>
+                            </div>
+                            <span class="card-number">&#8727;&#8727;&#8727;&#8727; &#8727;&#8727;&#8727;&#8727;
+                                &#8727;&#8727;&#8727;&#8727;
+                                6542</span>
+                        </div>
+                        <div class="d-flex flex-column text-start text-lg-end">
+                            <div class="d-flex order-sm-0 order-1 mt-3">
+                                <button class="btn btn-label-primary me-3" data-bs-toggle="modal"
+                                    data-bs-target="#editCCModal">
+                                    Edit
+                                </button>
+                                <button class="btn btn-label-secondary">Delete</button>
+                            </div>
+                            <small class="mt-sm-auto mt-2 order-sm-1 order-0">Card expires at 10/24</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="cardMaster border p-3 rounded">
+                    <div class="d-flex justify-content-between flex-sm-row flex-column">
+                        <div class="card-information">
+                            <img class="mb-3 img-fluid" src="../../assets/img/icons/payments/american-ex.png"
+                                alt="Visa Card" />
+                            <h6 class="mb-2 pt-1">Mildred Wagner</h6>
+                            <span class="card-number">&#8727;&#8727;&#8727;&#8727; &#8727;&#8727;&#8727;&#8727;
+                                &#8727;&#8727;&#8727;&#8727;
+                                5896</span>
+                        </div>
+                        <div class="d-flex flex-column text-start text-lg-end">
+                            <div class="d-flex order-sm-0 order-1 mt-3">
+                                <button class="btn btn-label-primary me-3" data-bs-toggle="modal"
+                                    data-bs-target="#editCCModal">
+                                    Edit
+                                </button>
+                                <button class="btn btn-label-secondary">Delete</button>
+                            </div>
+                            <small class="mt-sm-auto mt-2 order-sm-1 order-0">Card expires at 10/27</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- / Projects table
 </div>

@@ -29,7 +29,7 @@
             <span class="menu-header-text">Pasien Menu</span>
         </li>
         <li class="menu-item <?= ($menu == 'deteksiDini') ? 'active' : '' ?>">
-            <a href="app-email.html" class="menu-link">
+            <a href="<?= base_url('deteksiDini') ?>" class="menu-link">
                 <i class="menu-icon tf-icons ti ti-stethoscope"></i>
                 <div data-i18n="Deteksi Dini">Deteksi Dini</div>
             </a>

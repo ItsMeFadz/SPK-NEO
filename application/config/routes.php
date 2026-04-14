@@ -11,7 +11,13 @@ $route['auth/register'] = 'Auth/register';
 $route['auth/process'] = 'Auth/process';
 $route['logout'] = 'Auth/logout';
 
-// Admin
+
+// User Menu
+$route['deteksiDini'] = 'DeteksiDiniController';
+
+
+
+// Admin Menu
 $route['dashboard'] = 'DashboardController';
 $route['pasien'] = 'PasienController';
 

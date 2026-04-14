@@ -157,3 +157,24 @@
 .swal2-container {
     z-index: 20000 !important;
 }
+
+/* sembunyikan radio */
+.btn-check-custom {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* YA */
+.btn-check-custom.ya:checked + .btn {
+  background-color: #E9E7FD !important;
+  border-color: #ec4899 !important;
+  color: #ec4899 !important;
+}
+
+/* TIDAK */
+.btn-check-custom.tidak:checked + .btn {
+  background-color: #F1F1F2 !important;
+  border-color: #6b7280 !important;
+  color: #6b7280 !important;
+}
