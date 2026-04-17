@@ -1,3 +1,7 @@
+<script>
+    const BASE_URL = "<?= base_url() ?>";
+</script>
+
 <!-- build:js assets/vendor/js/core.js -->
 <script src="<?= $assets_admin ?>vendor/libs/jquery/jquery.js"></script>
 <script src="<?= $assets_admin ?>vendor/libs/popper/popper.js"></script>
@@ -30,3 +34,4 @@
 <script src="<?= $assets_admin ?>js/dashboards-analytics.js"></script>
 <script src="<?= $assets_admin ?>js/toasts-custom.js"></script>
 <script src="<?= $assets_admin ?>js/pagination-custom.js"></script>
+<script src="<?= $assets_admin ?>js/search-data.js"></script>

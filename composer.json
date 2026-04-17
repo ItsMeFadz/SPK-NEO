@@ -8,7 +8,8 @@
 		"source": "https://github.com/pocketarc/codeigniter"
 	},
 	"require": {
-		"php": ">=5.4.8"
+		"php": ">=5.4.8",
+		"dompdf/dompdf": "*"
 	},
 	"suggest": {
 		"paragonie/random_compat": "Provides better randomness in PHP 5.x"
@@ -19,10 +20,10 @@
 			"phpunit --color=always --coverage-text --configuration tests/travis/sqlite.phpunit.xml"
 		],
 		"post-install-cmd": [
-			"sed -i s/name{0}/name[0]/ vendor/mikey179/vfsstream/src/main/php/org/bovigo/vfs/vfsStream.php"
+			"@php -r \"if (file_exists('vendor/mikey179/vfsstream/src/main/php/org/bovigo/vfs/vfsStream.php')) { $file = 'vendor/mikey179/vfsstream/src/main/php/org/bovigo/vfs/vfsStream.php'; $content = file_get_contents($file); file_put_contents($file, str_replace('name{0}', 'name[0]', $content)); }\""
 		],
 		"post-update-cmd": [
-			"sed -i s/name{0}/name[0]/ vendor/mikey179/vfsstream/src/main/php/org/bovigo/vfs/vfsStream.php"
+			"@php -r \"if (file_exists('vendor/mikey179/vfsstream/src/main/php/org/bovigo/vfs/vfsStream.php')) { $file = 'vendor/mikey179/vfsstream/src/main/php/org/bovigo/vfs/vfsStream.php'; $content = file_get_contents($file); file_put_contents($file, str_replace('name{0}', 'name[0]', $content)); }\""
 		]
 	},
 	"require-dev": {

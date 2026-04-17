@@ -7038,13 +7038,13 @@ label.btn {
 
 .btn-warning {
   color: #fff;
-  background-color: #ff9f43;
-  border-color: #ff9f43;
+  background-color: #E6DF2E;
+  border-color: #F6FF43;
 }
 .btn-warning:hover {
   color: #fff !important;
-  background-color: #e68f3c !important;
-  border-color: #e68f3c !important;
+  background-color: #D1D134 !important;
+  border-color: #D1D134 !important;
 }
 .btn-check:focus + .btn-warning, .btn-warning:focus, .btn-warning.focus {
   color: #fff;
@@ -12382,7 +12382,7 @@ html:not([dir=rtl]) .card .card-separator {
 
 .text-warning {
   --bs-text-opacity: 1;
-  color: rgba(var(--bs-warning-rgb), var(--bs-text-opacity)) !important;
+  color: #E7E33C !important;
 }
 
 .text-danger {

@@ -1,5 +1,5 @@
 <?php
-class RuleDetailsModels extends CI_Model {
+class RuleDetailModels extends CI_Model {
 
     public function getAll()
     {
@@ -13,18 +13,26 @@ class RuleDetailsModels extends CI_Model {
         ])->row();
     }
 
-    public function insert($data)
+    public function getByRule($rule_id)
     {
-        return $this->db->insert('rule_detail', $data);
+        return $this->db
+            ->where('id_rule', $rule_id)
+            ->get('rule_detail')
+            ->result();
     }
 
-    public function updateById($id, $data)
-    {
-        return $this->db->where('id', $id)->update('rule_detail', $data);
-    }
+    // public function insert($data)
+    // {
+    //     return $this->db->insert('rule_detail', $data);
+    // }
 
-    public function deleteById($id)
-    {
-        return $this->db->where('id', $id)->delete('rule_detail');
-    }
+    // public function updateById($id, $data)
+    // {
+    //     return $this->db->where('id', $id)->update('rule_detail', $data);
+    // }
+
+    // public function deleteById($id)
+    // {
+    //     return $this->db->where('id', $id)->delete('rule_detail');
+    // }
 }

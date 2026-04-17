@@ -1,76 +1,97 @@
 document.addEventListener("DOMContentLoaded", function () {
-	const rowsPerPage = 5;
-	const rows = document.querySelectorAll("#table-body tr");
-	document.getElementById("table-body").style.display = "";
+    const rowsPerPage = 5;
+    const tableBody = document.getElementById("table-body");
+    const pagination = document.getElementById("pagination");
+    let currentPage = 1;
 
-	if (!rows.length || !pagination) return; // biar aman kalau tidak ada
+    if (!tableBody || !pagination) {
+        return;
+    }
 
-	let currentPage = 1;
-	const totalPages = Math.ceil(rows.length / rowsPerPage);
+    function getRows() {
+        return Array.from(tableBody.querySelectorAll("tr"));
+    }
 
-	function showPage(page) {
-		currentPage = page;
+    function getTotalPages(rows) {
+        return Math.max(1, Math.ceil(rows.length / rowsPerPage));
+    }
 
-		rows.forEach((row) => {
-			row.style.display = "none";
-		});
+    function updatePagination(rows, totalPages) {
+        pagination.innerHTML = "";
 
-		const start = (page - 1) * rowsPerPage;
-		const end = start + rowsPerPage;
+        if (!rows.length || totalPages <= 1) {
+            return;
+        }
 
-		for (let i = start; i < end && i < rows.length; i++) {
-			rows[i].style.display = "";
-		}
+        const prev = document.createElement("li");
+        prev.className = "page-item " + (currentPage === 1 ? "disabled" : "");
+        prev.innerHTML = '<a class="page-link" href="#">&laquo;</a>';
+        prev.onclick = function (e) {
+            e.preventDefault();
+            if (currentPage > 1) {
+                showPage(currentPage - 1);
+            }
+        };
+        pagination.appendChild(prev);
 
-		updatePagination();
-	}
+        let startPage = Math.max(1, currentPage - 1);
+        let endPage = Math.min(totalPages, currentPage + 1);
 
-	function updatePagination() {
-		pagination.innerHTML = "";
+        if (currentPage === 1) {
+            endPage = Math.min(3, totalPages);
+        }
 
-		// prev
-		const prev = document.createElement("li");
-		prev.className = "page-item " + (currentPage === 1 ? "disabled" : "");
-		prev.innerHTML = `<a class="page-link" href="#">«</a>`;
-		prev.onclick = (e) => {
-			e.preventDefault();
-			if (currentPage > 1) showPage(currentPage - 1);
-		};
-		pagination.appendChild(prev);
+        if (currentPage === totalPages) {
+            startPage = Math.max(1, totalPages - 2);
+        }
 
-		// 🔥 number (MAX 3)
-		let startPage = Math.max(1, currentPage - 1);
-		let endPage = Math.min(totalPages, currentPage + 1);
+        for (let i = startPage; i <= endPage; i++) {
+            const li = document.createElement("li");
+            li.className = "page-item " + (i === currentPage ? "active" : "");
+            li.innerHTML = `<a class="page-link" href="#">${i}</a>`;
+            li.onclick = function (e) {
+                e.preventDefault();
+                showPage(i);
+            };
+            pagination.appendChild(li);
+        }
 
-		if (currentPage === 1) {
-			endPage = Math.min(3, totalPages);
-		}
+        const next = document.createElement("li");
+        next.className = "page-item " + (currentPage === totalPages ? "disabled" : "");
+        next.innerHTML = '<a class="page-link" href="#">&raquo;</a>';
+        next.onclick = function (e) {
+            e.preventDefault();
+            if (currentPage < totalPages) {
+                showPage(currentPage + 1);
+            }
+        };
+        pagination.appendChild(next);
+    }
 
-		if (currentPage === totalPages) {
-			startPage = Math.max(1, totalPages - 2);
-		}
+    function showPage(page) {
+        const rows = getRows();
+        const totalPages = getTotalPages(rows);
 
-		for (let i = startPage; i <= endPage; i++) {
-			const li = document.createElement("li");
-			li.className = "page-item " + (i === currentPage ? "active" : "");
-			li.innerHTML = `<a class="page-link" href="#">${i}</a>`;
-			li.onclick = (e) => {
-				e.preventDefault();
-				showPage(i);
-			};
-			pagination.appendChild(li);
-		}
+        currentPage = Math.min(Math.max(page, 1), totalPages);
 
-		// next
-		const next = document.createElement("li");
-		next.className =
-			"page-item " + (currentPage === totalPages ? "disabled" : "");
-		next.innerHTML = `<a class="page-link" href="#">»</a>`;
-		next.onclick = (e) => {
-			e.preventDefault();
-			if (currentPage < totalPages) showPage(currentPage + 1);
-		};
-		pagination.appendChild(next);
-	}
-	showPage(1);
+        rows.forEach(function (row) {
+            row.style.display = "none";
+        });
+
+        const start = (currentPage - 1) * rowsPerPage;
+        const end = start + rowsPerPage;
+
+        for (let i = start; i < end && i < rows.length; i++) {
+            rows[i].style.display = "";
+        }
+
+        tableBody.style.display = rows.length ? "table-row-group" : "none";
+        updatePagination(rows, totalPages);
+    }
+
+    window.refreshTablePagination = function (page) {
+        showPage(page || 1);
+    };
+
+    window.refreshTablePagination(1);
 });

@@ -1,6 +1,6 @@
 <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
     <div class="app-brand demo">
-        <a href="index.html" class="app-brand-link">
+        <a href="<?= base_url('dashboard') ?>" class="app-brand-link">
             <span class="app-brand-logo demo">
                 <img src="<?= $assets_admin ?>img/icons/brands/cancer.png" alt="">
             </span>
@@ -34,10 +34,10 @@
                 <div data-i18n="Deteksi Dini">Deteksi Dini</div>
             </a>
         </li>
-        <li class="menu-item <?= ($menu == 'hasilDiagnosis') ? 'active' : '' ?>">
-            <a href="app-chat.html" class="menu-link">
+        <li class="menu-item <?= ($menu == 'riwayatDiagnosis') ? 'active' : '' ?>">
+            <a href="<?= base_url('riwayatDiagnosis') ?>" class="menu-link">
                 <i class="menu-icon tf-icons ti ti-list-check"></i>
-                <div data-i18n="Hasil Diagnosis">Hasil Diagnosis</div>
+                <div data-i18n="Riwayat Diagnosis">Riwayat Diagnosis </div>
             </a>
         </li>
         <li class="menu-item <?= ($menu == 'edukasi') ? 'active' : '' ?>">
@@ -52,11 +52,11 @@
             <span class="menu-header-text">Admin Menu</span>
         </li>
         <!-- Cards -->
-        <li class="menu-item <?= ($menu == 'pasien') ? 'active' : '' ?>">
-            <a href="<?= base_url('pasien') ?>" class="menu-link">
+        <li class="menu-item <?= ($menu == 'dataPasien') ? 'active' : '' ?>">
+            <a href="<?= base_url('dataPasien') ?>" class="menu-link">
                 <i class="menu-icon tf-icons ti ti-user-search"></i>
                 <div data-i18n="Data Pasien">Data Pasien</div>
-                <div class="badge bg-label-primary rounded-pill ms-auto">6</div>
+                <!-- <div class="badge bg-label-primary rounded-pill ms-auto"><?= $total_hari_ini ?? 0 ?></div> -->
             </a>
         </li>
         <!-- User interface -->

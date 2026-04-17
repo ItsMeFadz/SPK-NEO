@@ -14,12 +14,18 @@ $route['logout'] = 'Auth/logout';
 
 // User Menu
 $route['deteksiDini'] = 'DeteksiDiniController';
+$route['deteksiDini/proses'] = 'DeteksiDiniController/proses';
+$route['deteksiDini/hasil/(:num)'] = 'DeteksiDiniController/hasil/$1';
+$route['deteksiDini/unduh/(:num)'] = 'DeteksiDiniController/unduh/$1';
 
-
+$route['riwayatDiagnosis'] = 'RiwayatDiagnosisController';
+$route['riwayatDiagnosis/hasil/(:num)'] = 'RiwayatDiagnosisController/hasil/$1';
+$route['riwayatDiagnosis/search'] = 'RiwayatDiagnosisController/search';
 
 // Admin Menu
 $route['dashboard'] = 'DashboardController';
-$route['pasien'] = 'PasienController';
+$route['dataPasien'] = 'DataPasienController';
+$route['dataPasien/search'] = 'DataPasienController/search';
 
 // Gejala
 $route['gejala'] = 'GejalaController';

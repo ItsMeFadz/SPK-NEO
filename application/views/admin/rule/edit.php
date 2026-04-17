@@ -3,7 +3,7 @@
     <div class="card">
         <!-- Notifications -->
         <h5 class="card-header pb-1">Tambah Basis Rule</h5>
-        <form method="post" action="<?= base_url('rule/store') ?>">
+        <form method="post" action="<?= base_url('rule/update/' . $rule->id) ?>">
             <div class="card-body">
                 <div class="row mb-3">
                     <label class="col-sm-2 col-form-label" for="basic-default-name">Risiko</label>
