@@ -9,12 +9,16 @@
         rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="<?= base_url('assets/landing/css/core.css') ?>">
+    <link rel="stylesheet" href="<?= base_url('assets/admin/css/custom.css') ?>">
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
 <body class="text-gray-700 antialiased selection:bg-pink-200 selection:text-pink-900">
+
+    <!-- Toast Notifications Container -->
+    <ul class="notifications"></ul>
 
     <div class="bg-blobs">
         <div class="blob w-96 h-96 top-0 -left-20 bg-purple-300 mix-blend-multiply animate-blob"></div>
@@ -325,7 +329,8 @@
                             <div class="relative">
                                 <i class="fas fa-user absolute left-3 top-3.5 text-gray-400"></i>
                                 <input type="text" name="username" placeholder="Nama Pengguna"
-                                    class="w-full pl-10 pr-4 py-3 rounded-xl input-modern text-sm font-semibold" required>
+                                    class="w-full pl-10 pr-4 py-3 rounded-xl input-modern text-sm font-semibold"
+                                    required>
                             </div>
                         </div>
                         <div>
@@ -360,7 +365,7 @@
                             <div class="relative">
                                 <i class="fas fa-user-plus absolute left-3 top-3.5 text-gray-400"></i>
                                 <input type="text" name="name" placeholder="BUAT NAMA PENGGUNA"
-                                    class="w-full pl-10 pr-4 py-3 rounded-xl input-modern text-sm font-semibold uppercase"
+                                    class="w-full pl-10 pr-4 py-3 rounded-xl input-modern text-sm font-semibold"
                                     required>
                             </div>
                         </div>
@@ -425,6 +430,7 @@
     </footer>
 
     <script src="<?= base_url('assets/landing/js/main.js') ?>"></script>
+    <script src="<?= base_url('assets/admin/js/toasts-custom.js') ?>"></script>
 
 </body>
 

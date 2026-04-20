@@ -64,7 +64,7 @@
                 <div class="row">
                     <div class="col-md-12 mb-3">
                         <label for="exampleFormControlSelect1" class="form-label">Level User</label>
-                        <select class="form-select" name="role">
+                        <select class="form-select" name="role" disabled>
                             <option disabled>Select</option>
                             <option value="1" <?= $user->role == 1 ? 'selected' : '' ?>>01 - Admin</option>
                             <option value="2" <?= $user->role == 2 ? 'selected' : '' ?>>02 - User</option>

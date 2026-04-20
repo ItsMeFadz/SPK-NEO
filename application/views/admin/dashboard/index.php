@@ -1,873 +1,512 @@
-<div class="row">
-    <!-- Website Analytics -->
-    <div class="col-lg-6 mb-4">
-        <div class="swiper-container swiper-container-horizontal swiper swiper-card-advance-bg"
-            id="swiper-with-pagination-cards">
-            <div class="swiper-wrapper">
-                <div class="swiper-slide">
-                    <div class="row">
-                        <div class="col-12">
-                            <h5 class="text-white mb-0 mt-2">Website Analytics</h5>
-                            <small>Total 28.5% Conversion Rate</small>
-                        </div>
-                        <div class="row">
-                            <div class="col-lg-7 col-md-9 col-12 order-2 order-md-1">
-                                <h6 class="text-white mt-0 mt-md-3 mb-3">Traffic</h6>
-                                <div class="row">
-                                    <div class="col-6">
-                                        <ul class="list-unstyled mb-0">
-                                            <li class="d-flex mb-4 align-items-center">
-                                                <p class="mb-0 fw-semibold me-2 website-analytics-text-bg">
-                                                    28%</p>
-                                                <p class="mb-0">Sessions</p>
-                                            </li>
-                                            <li class="d-flex align-items-center mb-2">
-                                                <p class="mb-0 fw-semibold me-2 website-analytics-text-bg">
-                                                    1.2k</p>
-                                                <p class="mb-0">Leads</p>
-                                            </li>
-                                        </ul>
+<?php
+$role = $this->session->userdata('role');
+$summary = $summary ?? [];
+$risk_distribution = $risk_distribution ?? [];
+$latest_diagnoses = $latest_diagnoses ?? [];
+$latest_patient = $latest_patient ?? null;
+$highest_risk_case = $highest_risk_case ?? null;
+$current_user_name = trim((string) ($current_user_name ?? 'Pengguna'));
+
+$totalCases = 0;
+foreach ($risk_distribution as $item)
+{
+    $totalCases += (int) $item->total;
+}
+
+$formatRisk = function ($level, $fallbackName = '')
+{
+    switch ((int) $level)
+    {
+        case 1:
+            return ['label' => 'Rendah', 'badge' => 'risk-low', 'icon' => 'ti-shield-check', 'color' => '#10b981', 'bar' => '#10b981'];
+        case 2:
+            return ['label' => 'Sedang', 'badge' => 'risk-mid', 'icon' => 'ti-alert-triangle', 'color' => '#f59e0b', 'bar' => '#f59e0b'];
+        case 3:
+            return ['label' => 'Tinggi', 'badge' => 'risk-high', 'icon' => 'ti-activity-heartbeat', 'color' => '#ec4899', 'bar' => '#ec4899'];
+        default:
+            return ['label' => $fallbackName ?: 'N/A', 'badge' => 'risk-none', 'icon' => 'ti-stethoscope', 'color' => '#94a3b8', 'bar' => '#94a3b8'];
+    }
+};
+?>
+
+<!-- ADMIN DASHBOARD  (role = 1) -->
+<?php if ($role == '1'): ?>
+    <div class="spk-db">
+
+        <div class="spk-hero shadow-lg rounded">
+            <div class="spk-hero-inner">
+                <div>
+                    <div class="spk-hero-tag"><i class="ti ti-heart-rate-monitor"></i> Sistem Pakar Deteksi Tumor Payudara
+                    </div>
+                    <h1>Monitoring <em>Sistem Pakar</em><br>Tumor Payudara secara real-time.</h1>
+                    <p>Halo <?= html_escape($current_user_name) ?>, semua data pasien, diagnosis, dan distribusi risiko
+                        tersaji dalam satu tampilan terpusat.</p>
+                    <div class="spk-hero-btns">
+                        <a href="<?= base_url('deteksiDini') ?>" class="spk-btn-pink"><i class="ti ti-stethoscope"></i>
+                            Mulai Deteksi</a>
+                        <a href="<?= base_url('dataPasien') ?>" class="spk-btn-ghost"><i class="ti ti-users"></i> Lihat
+                            Pasien</a>
+                    </div>
+                </div>
+                <div class="spk-hero-box">
+                    <div class="spk-hero-box-title">Highlight Hari Ini</div>
+                    <div class="spk-hstat">
+                        <div class="spk-hstat-label">Diagnosis hari ini</div>
+                        <div class="spk-hstat-val"><?= (int) ($summary['today_diagnosa'] ?? 0) ?></div>
+                        <div class="spk-hstat-sub">kasus baru terdeteksi</div>
+                    </div>
+                    <div class="spk-hstat">
+                        <div class="spk-hstat-label">7 hari terakhir</div>
+                        <div class="spk-hstat-val"><?= (int) ($summary['weekly_diagnosa'] ?? 0) ?></div>
+                        <div class="spk-hstat-sub">kasus dalam seminggu</div>
+                    </div>
+                    <div class="spk-hstat">
+                        <div class="spk-hstat-label">Rata-rata skor risiko</div>
+                        <div class="spk-hstat-val"><?= number_format((float) ($summary['average_persen'] ?? 0), 1) ?>%</div>
+                        <div class="spk-hstat-sub">dari seluruh diagnosis</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="spk-stat-grid">
+            <div class="card spk-card shadow-sm">
+                <div class="card-body">
+                    <div class="spk-stat-top">
+                        <div class="spk-stat-icon si-pink"><i class="ti ti-users"></i></div>
+                    </div>
+                    <h2 class="fw-bold mb-1"><?= (int) ($summary['total_pasien'] ?? 0) ?></h2>
+                    <div class="spk-stat-label">Total Pasien</div>
+                    <div class="spk-stat-hint">Pengguna terdaftar dengan role pasien</div>
+                </div>
+            </div>
+            <div class="card spk-card shadow-sm">
+                <div class="card-body">
+                    <div class="spk-stat-top">
+                        <div class="spk-stat-icon si-teal"><i class="ti ti-report-analytics"></i></div>
+                    </div>
+                    <h2 class="fw-bold mb-1"><?= (int) ($summary['total_diagnosa'] ?? 0) ?></h2>
+                    <div class="spk-stat-label">Total Diagnosis</div>
+                    <div class="spk-stat-hint">Riwayat diagnosis tersimpan</div>
+                </div>
+            </div>
+            <div class="card spk-card shadow-sm">
+                <div class="card-body">
+                    <div class="spk-stat-top">
+                        <div class="spk-stat-icon si-amber"><i class="ti ti-list-details"></i></div>
+                    </div>
+                    <h2 class="fw-bold mb-1"><?= (int) ($summary['total_gejala'] ?? 0) ?></h2>
+                    <div class="spk-stat-label">Data Gejala</div>
+                    <div class="spk-stat-hint">Gejala screening</div>
+                </div>
+            </div>
+            <div class="card spk-card shadow-sm">
+                <div class="card-body">
+                    <div class="spk-stat-top">
+                        <div class="spk-stat-icon si-violet"><i class="ti ti-settings"></i></div>
+                    </div>
+                    <h2 class="fw-bold mb-1"><?= (int) ($summary['total_rule'] ?? 0) ?></h2>
+                    <div class="spk-stat-label">Basis Rule</div>
+                    <div class="spk-stat-hint"><?= (int) ($summary['total_risiko'] ?? 0) ?> level risiko</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="spk-two">
+
+            <!-- Risk Distribution -->
+            <div class="card">
+                <div class="spk-panel-head">
+                    <div class="gap-2">
+                        <h6 class="my-md-0 fw-bold">Distribusi Risiko Diagnosis</h6>
+                        <p class="fs-6 my-md-0">Komposisi hasil berdasarkan level risiko tersimpan</p>
+                    </div>
+                    <span class="spk-chip"><span class="dot"></span><?= $totalCases ?> <span class="d-none d-md-inline">Total Kasus</span></span>
+                </div>
+                <div class="spk-panel-body">
+                    <?php if (!empty($risk_distribution)): ?>
+                        <div class="spk-risk-rows">
+                            <?php foreach ($risk_distribution as $item):
+                                $rm = $formatRisk($item->level, (string) $item->name);
+                                $pct = $totalCases > 0 ? round(((int) $item->total / $totalCases) * 100) : 0;
+                                ?>
+                                <div>
+                                    <div class="spk-risk-top">
+                                        <div class="spk-risk-info">
+                                            <div class="spk-risk-dot" style="background:<?= $rm['color'] ?>"></div>
+                                            <div>
+                                                <p class="my-md-0 fw-bold"><?= html_escape($item->name ?: $rm['label']) ?></p>
+                                                <div class="spk-risk-lv">Level <?= (int) $item->level ?> &bull; <span
+                                                        class="spk-badge <?= $rm['badge'] ?>"><?= $rm['label'] ?></span></div>
+                                            </div>
+                                        </div>
+                                        <div style="text-align:right">
+                                            <div class="spk-risk-cnt" style="color:<?= $rm['color'] ?>"><?= (int) $item->total ?>
+                                                kasus</div>
+                                            <div class="spk-risk-pct"><?= $pct ?>% dari total</div>
+                                        </div>
                                     </div>
-                                    <div class="col-6">
-                                        <ul class="list-unstyled mb-0">
-                                            <li class="d-flex mb-4 align-items-center">
-                                                <p class="mb-0 fw-semibold me-2 website-analytics-text-bg">
-                                                    3.1k</p>
-                                                <p class="mb-0">Page Views</p>
-                                            </li>
-                                            <li class="d-flex align-items-center mb-2">
-                                                <p class="mb-0 fw-semibold me-2 website-analytics-text-bg">
-                                                    12%</p>
-                                                <p class="mb-0">Conversions</p>
-                                            </li>
-                                        </ul>
+                                    <div class="spk-bar-wrap">
+                                        <div class="spk-bar" style="width:<?= $pct ?>%;background:<?= $rm['bar'] ?>"></div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-lg-5 col-md-3 col-12 order-1 order-md-2 my-4 my-md-0 text-center">
-                                <img src="<?= $assets_admin ?>img/illustrations/card-website-analytics-1.png"
-                                    alt="Website Analytics" width="170" class="card-website-analytics-img" />
-                            </div>
+                            <?php endforeach; ?>
                         </div>
-                    </div>
+                    <?php else: ?>
+                        <div class="spk-empty"><i class="ti ti-chart-donut-3"></i>
+                            <p>Belum ada data diagnosis untuk divisualisasikan.</p>
+                        </div>
+                    <?php endif; ?>
                 </div>
-                <div class="swiper-slide">
-                    <div class="row">
-                        <div class="col-12">
-                            <h5 class="text-white mb-0 mt-2">Website Analytics</h5>
-                            <small>Total 28.5% Conversion Rate</small>
-                        </div>
-                        <div class="col-lg-7 col-md-9 col-12 order-2 order-md-1">
-                            <h6 class="text-white mt-0 mt-md-3 mb-3">Spending</h6>
-                            <div class="row">
-                                <div class="col-6">
-                                    <ul class="list-unstyled mb-0">
-                                        <li class="d-flex mb-4 align-items-center">
-                                            <p class="mb-0 fw-semibold me-2 website-analytics-text-bg">
-                                                12h</p>
-                                            <p class="mb-0">Spend</p>
-                                        </li>
-                                        <li class="d-flex align-items-center mb-2">
-                                            <p class="mb-0 fw-semibold me-2 website-analytics-text-bg">
-                                                127</p>
-                                            <p class="mb-0">Order</p>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <div class="col-6">
-                                    <ul class="list-unstyled mb-0">
-                                        <li class="d-flex mb-4 align-items-center">
-                                            <p class="mb-0 fw-semibold me-2 website-analytics-text-bg">
-                                                18</p>
-                                            <p class="mb-0">Order Size</p>
-                                        </li>
-                                        <li class="d-flex align-items-center mb-2">
-                                            <p class="mb-0 fw-semibold me-2 website-analytics-text-bg">
-                                                2.3k</p>
-                                            <p class="mb-0">Items</p>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-5 col-md-3 col-12 order-1 order-md-2 my-4 my-md-0 text-center">
-                            <img src="<?= $assets_admin ?>img/illustrations/card-website-analytics-2.png"
-                                alt="Website Analytics" width="170" class="card-website-analytics-img" />
-                        </div>
+            </div>
+
+            <!-- Insight Panel -->
+            <div class="card">
+                <?php if ($highest_risk_case):
+                    $tRM = $formatRisk($highest_risk_case->level, (string) $highest_risk_case->risiko_name);
+                    ?>
+                    <div class="spk-insight-hero rounded-top">
+                        <h6 class="spk-ih-tag">Kasus Risiko Tertinggi</h6>
+                        <div class="spk-ih-name"><?= html_escape($highest_risk_case->name) ?></div>
+                        <div class="spk-ih-meta"><?= (int) $highest_risk_case->persen ?>% skor &bull;
+                            <?= date('d M Y H:i', strtotime($highest_risk_case->created_at)) ?></div>
+                        <div class="spk-ih-bdg"><span class="spk-badge <?= $tRM['badge'] ?>"><?= $tRM['label'] ?></span></div>
                     </div>
-                </div>
-                <div class="swiper-slide">
-                    <div class="row">
-                        <div class="col-12">
-                            <h5 class="text-white mb-0 mt-2">Website Analytics</h5>
-                            <small>Total 28.5% Conversion Rate</small>
+                <?php else: ?>
+                    <div class="spk-insight-hero rounded-top">
+                        <div class="spk-ih-tag">Kasus Risiko Tertinggi</div>
+                        <div class="spk-ih-name" style="color:rgba(255,255,255,.35)">Belum ada data diagnosis.</div>
+                    </div>
+                <?php endif; ?>
+
+                <div class="spk-insight-body">
+                    <!-- <?php if ($latest_patient): ?>
+                        <div class="card-body border rounded px-md-3 py-md-3">
+                            <div class="spk-icard-label">Pasien Terbaru</div>
+                            <h6 class="my-md-1 fw-bold"><?= html_escape($latest_patient->name) ?></h6>
+                            <p class="my-md-0 fs-tiny">
+                                <?= html_escape($latest_patient->usia) ?> tahun
+                                <?php if (!empty($latest_patient->alamat)): ?>&bull;
+                                    <?= html_escape($latest_patient->alamat) ?>        <?php endif; ?>
+                            </p>
+                            <p class="my-md-1 fs-tiny text-primary fw-bold"><i class="ti ti-calendar-check"></i>
+                            Bergabung
+                                <?= date('d M Y', strtotime($latest_patient->created_at)) ?></p>
                         </div>
-                        <div class="col-lg-7 col-md-9 col-12 order-2 order-md-1">
-                            <h6 class="text-white mt-0 mt-md-3 mb-3">Revenue Sources</h6>
-                            <div class="row">
-                                <div class="col-6">
-                                    <ul class="list-unstyled mb-0">
-                                        <li class="d-flex mb-4 align-items-center">
-                                            <p class="mb-0 fw-semibold me-2 website-analytics-text-bg">
-                                                268</p>
-                                            <p class="mb-0">Direct</p>
-                                        </li>
-                                        <li class="d-flex align-items-center mb-2">
-                                            <p class="mb-0 fw-semibold me-2 website-analytics-text-bg">
-                                                62</p>
-                                            <p class="mb-0">Referral</p>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <div class="col-6">
-                                    <ul class="list-unstyled mb-0">
-                                        <li class="d-flex mb-4 align-items-center">
-                                            <p class="mb-0 fw-semibold me-2 website-analytics-text-bg">
-                                                890</p>
-                                            <p class="mb-0">Organic</p>
-                                        </li>
-                                        <li class="d-flex align-items-center mb-2">
-                                            <p class="mb-0 fw-semibold me-2 website-analytics-text-bg">
-                                                1.2k</p>
-                                            <p class="mb-0">Campaign</p>
-                                        </li>
-                                    </ul>
+                    <?php else: ?>
+                        <div class="spk-icard">
+                            <div class="spk-icard-label">Pasien Terbaru</div>
+                            <div class="spk-icard-meta" style="color:var(--text-light)">Belum ada pasien terdaftar.</div>
+                        </div>
+                    <?php endif; ?> -->
+
+                    <div class="d-flex flex-column gap-3">
+                        <a href="<?= base_url('riwayatDiagnosis') ?>" class="text-decoration-none">
+                            <div class="spk-link-card border rounded">
+                                <div class="d-flex justify-content-between align-items-center px-3 py-3 px-md-3 py-md-3">
+                                    <div>
+                                        <h6 class="my-md-0 fw-bold">Riwayat Diagnosis</h6>
+                                        <div class="small text-muted">Review hasil deteksi tersimpan</div>
+                                    </div>
+                                    <i class="ti ti-arrow-right"></i>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-lg-5 col-md-3 col-12 order-1 order-md-2 my-4 my-md-0 text-center">
-                            <img src="<?= $assets_admin ?>img/illustrations/card-website-analytics-3.png"
-                                alt="Website Analytics" width="170" class="card-website-analytics-img" />
-                        </div>
+                        </a>
+                        <a href="<?= base_url('edukasi') ?>" class="text-decoration-none mb-2">
+                            <div class="spk-link-card border rounded">
+                                <div class="d-flex justify-content-between align-items-center px-3 py-3 px-md-3 py-md-3">
+                                    <div>
+                                        <h6 class="my-md-0 fw-bold">Edukasi &amp; Informasi</h6>
+                                        <div class="small text-muted">Materi SADARI dan pencegahan</div>
+                                    </div>
+                                    <i class="ti ti-arrow-right"></i>
+                                </div>
+                            </div>
+                        </a>
                     </div>
                 </div>
             </div>
-            <div class="swiper-pagination"></div>
         </div>
-    </div>
-    <!--/ Website Analytics -->
 
-    <!-- Sales Overview -->
-    <div class="col-lg-3 col-sm-6 mb-4">
+        <!-- ── RECENT DIAGNOSES ──────────────────────────────── -->
         <div class="card">
-            <div class="card-header">
-                <div class="d-flex justify-content-between">
-                    <small class="d-block mb-1 text-muted">Sales Overview</small>
-                    <p class="card-text text-success">+18.2%</p>
+            <div class="spk-panel-head">
+                <div class="gap-2">
+                    <h6 class="my-md-0 fw-bold">Aktivitas Diagnosis Terbaru</h6>
+                    <p class="fs-6 my-md-0">Lima hasil deteksi terbaru yang tersimpan di sistem</p>
                 </div>
-                <h4 class="card-title mb-1">$42.5k</h4>
+                <a href="<?= base_url('dataPasien') ?>" class="spk-btn-outline"><i class="ti ti-table"></i> <span class="d-none d-md-inline">Tabel
+                    Lengkap</span></a>
             </div>
             <div class="card-body">
-                <div class="row">
-                    <div class="col-4">
-                        <div class="d-flex gap-2 align-items-center mb-2">
-                            <span class="badge bg-label-info p-1 rounded"><i
-                                    class="ti ti-shopping-cart ti-xs"></i></span>
-                            <p class="mb-0">Order</p>
-                        </div>
-                        <h5 class="mb-0 pt-1 text-nowrap">62.2%</h5>
-                        <small class="text-muted">6,440</small>
-                    </div>
-                    <div class="col-4">
-                        <div class="divider divider-vertical">
-                            <div class="divider-text">
-                                <span class="badge-divider-bg bg-label-secondary">VS</span>
+                <?php if (!empty($latest_diagnoses)): ?>
+                    <div class="spk-diag-grid">
+                        <?php foreach ($latest_diagnoses as $row):
+                            $rm = $formatRisk($row->level, (string) $row->risiko_name);
+                            ?>
+                            <div class="spk-dcard">
+                                <div class="spk-dcard-top">
+                                    <div>
+                                        <h5 class="my-md-0 fw-bold"><?= html_escape($row->name ?: 'Pasien') ?></h5>
+                                        <p class="my-md-1 fs-tiny fw-normal">
+                                            <?= !empty($row->usia) ? (int) $row->usia . ' tahun' : 'Usia tidak tersedia' ?></p>
+                                    </div>
+                                    <span class="spk-badge <?= $rm['badge'] ?>"><?= $rm['label'] ?></span>
+                                </div>
+                                <div class="spk-dcard-meta">
+                                    <div class="d-flex align-items-center gap-1 fs-tiny fw-normal"><i
+                                            class="ti ti-calendar-event ti-xs text-primary"></i><?= date('d M Y, H:i', strtotime($row->created_at)) ?>
+                                    </div>
+                                    <div class="d-flex align-items-center gap-1 fs-tiny fw-normal"><i
+                                            class="ti ti-chart-donut-3 ti-xs text-primary"></i><?= (int) $row->persen ?>%</div>
+                                </div>
+                                <div class="spk-dcard-foot">
+                                    <span
+                                        class="my-md-1 fs-tiny fw-normal"><?= html_escape($row->risiko_name ?: 'Risiko belum ditentukan') ?></span>
+                                    <a href="<?= base_url('deteksiDini/unduh/' . $row->id) ?>" class="spk-btn-dl"><i
+                                            class="ti ti-download"></i> Unduh</a>
+                                </div>
                             </div>
-                        </div>
+                        <?php endforeach; ?>
                     </div>
-                    <div class="col-4 text-end">
-                        <div class="d-flex gap-2 justify-content-end align-items-center mb-2">
-                            <p class="mb-0">Visits</p>
-                            <span class="badge bg-label-primary p-1 rounded"><i class="ti ti-link ti-xs"></i></span>
-                        </div>
-                        <h5 class="mb-0 pt-1 text-nowrap ms-lg-n3 ms-xl-0">25.5%</h5>
-                        <small class="text-muted">12,749</small>
+                <?php else: ?>
+                    <div class="spk-empty"><i class="ti ti-report-analytics"></i>
+                        <p>Belum ada aktivitas diagnosis yang bisa ditampilkan.</p>
                     </div>
-                </div>
-                <div class="d-flex align-items-center mt-4">
-                    <div class="progress w-100" style="height: 8px">
-                        <div class="progress-bar bg-info" style="width: 70%" role="progressbar" aria-valuenow="70"
-                            aria-valuemin="0" aria-valuemax="100"></div>
-                        <div class="progress-bar bg-primary" role="progressbar" style="width: 30%" aria-valuenow="30"
-                            aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
-                </div>
+                <?php endif; ?>
             </div>
         </div>
-    </div>
-    <!--/ Sales Overview -->
 
-    <!-- Revenue Generated -->
-    <div class="col-lg-3 col-md-6 col-sm-6 mb-4">
-        <div class="card">
-            <div class="card-body pb-0">
-                <div class="card-icon">
-                    <span class="badge bg-label-success rounded-pill p-2">
-                        <i class="ti ti-credit-card ti-sm"></i>
-                    </span>
-                </div>
-                <h5 class="card-title mb-0 mt-2">97.5k</h5>
-                <small>Revenue Generated</small>
-            </div>
-            <div id="revenueGenerated"></div>
-        </div>
     </div>
-    <!--/ Revenue Generated -->
+<?php endif; ?>
 
-    <!-- Earning Reports -->
-    <div class="col-lg-6 mb-4">
-        <div class="card h-100">
-            <div class="card-header pb-0 d-flex justify-content-between mb-lg-n4">
-                <div class="card-title mb-0">
-                    <h5 class="mb-0">Earning Reports</h5>
-                    <small class="text-muted">Weekly Earnings Overview</small>
-                </div>
-                <div class="dropdown">
-                    <button class="btn p-0" type="button" id="earningReportsId" data-bs-toggle="dropdown"
-                        aria-haspopup="true" aria-expanded="false">
-                        <i class="ti ti-dots-vertical ti-sm text-muted"></i>
-                    </button>
-                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="earningReportsId">
-                        <a class="dropdown-item" href="javascript:void(0);">View More</a>
-                        <a class="dropdown-item" href="javascript:void(0);">Delete</a>
-                    </div>
-                </div>
-                <!-- </div> -->
-            </div>
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-12 col-md-4 d-flex flex-column align-self-end">
-                        <div class="d-flex gap-2 align-items-center mb-2 pb-1 flex-wrap">
-                            <h1 class="mb-0">$468</h1>
-                            <div class="badge rounded bg-label-success">+4.2%</div>
-                        </div>
-                        <small class="text-muted">You informed of this week compared to last
-                            week</small>
-                    </div>
-                    <div class="col-12 col-md-8">
-                        <div id="weeklyEarningReports"></div>
-                    </div>
-                </div>
-                <div class="border rounded p-3 mt-2">
-                    <div class="row gap-4 gap-sm-0">
-                        <div class="col-12 col-sm-4">
-                            <div class="d-flex gap-2 align-items-center">
-                                <div class="badge rounded bg-label-primary p-1">
-                                    <i class="ti ti-currency-dollar ti-sm"></i>
-                                </div>
-                                <h6 class="mb-0">Earnings</h6>
-                            </div>
-                            <h4 class="my-2 pt-1">$545.69</h4>
-                            <div class="progress w-75" style="height: 4px">
-                                <div class="progress-bar" role="progressbar" style="width: 65%" aria-valuenow="65"
-                                    aria-valuemin="0" aria-valuemax="100">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-12 col-sm-4">
-                            <div class="d-flex gap-2 align-items-center">
-                                <div class="badge rounded bg-label-info p-1"><i class="ti ti-chart-pie-2 ti-sm"></i>
-                                </div>
-                                <h6 class="mb-0">Profit</h6>
-                            </div>
-                            <h4 class="my-2 pt-1">$256.34</h4>
-                            <div class="progress w-75" style="height: 4px">
-                                <div class="progress-bar bg-info" role="progressbar" style="width: 50%"
-                                    aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-                            </div>
-                        </div>
-                        <div class="col-12 col-sm-4">
-                            <div class="d-flex gap-2 align-items-center">
-                                <div class="badge rounded bg-label-danger p-1">
-                                    <i class="ti ti-brand-paypal ti-sm"></i>
-                                </div>
-                                <h6 class="mb-0">Expense</h6>
-                            </div>
-                            <h4 class="my-2 pt-1">$74.19</h4>
-                            <div class="progress w-75" style="height: 4px">
-                                <div class="progress-bar bg-danger" role="progressbar" style="width: 65%"
-                                    aria-valuenow="65" aria-valuemin="0" aria-valuemax="100"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!--/ Earning Reports -->
 
-    <!-- Support Tracker -->
-    <div class="col-md-6 mb-4">
-        <div class="card">
-            <div class="card-header d-flex justify-content-between pb-0">
-                <div class="card-title mb-0">
-                    <h5 class="mb-0">Support Tracker</h5>
-                    <small class="text-muted">Last 7 Days</small>
-                </div>
-                <div class="dropdown">
-                    <button class="btn p-0" type="button" id="supportTrackerMenu" data-bs-toggle="dropdown"
-                        aria-haspopup="true" aria-expanded="false">
-                        <i class="ti ti-dots-vertical ti-sm text-muted"></i>
-                    </button>
-                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="supportTrackerMenu">
-                        <a class="dropdown-item" href="javascript:void(0);">View More</a>
-                        <a class="dropdown-item" href="javascript:void(0);">Delete</a>
-                    </div>
-                </div>
-            </div>
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-12 col-sm-4 col-md-12 col-lg-4">
-                        <div class="mt-lg-4 mt-lg-2 mb-lg-4 mb-2 pt-1">
-                            <h1 class="mb-0">164</h1>
-                            <p class="mb-0">Total Tickets</p>
-                        </div>
-                        <ul class="p-0 m-0">
-                            <li class="d-flex gap-3 align-items-center mb-lg-3 pt-2 pb-1">
-                                <div class="badge rounded bg-label-primary p-1"><i class="ti ti-ticket ti-sm"></i></div>
-                                <div>
-                                    <h6 class="mb-0 text-nowrap">New Tickets</h6>
-                                    <small class="text-muted">142</small>
-                                </div>
-                            </li>
-                            <li class="d-flex gap-3 align-items-center mb-lg-3 pb-1">
-                                <div class="badge rounded bg-label-info p-1">
-                                    <i class="ti ti-circle-check ti-sm"></i>
-                                </div>
-                                <div>
-                                    <h6 class="mb-0 text-nowrap">Open Tickets</h6>
-                                    <small class="text-muted">28</small>
-                                </div>
-                            </li>
-                            <li class="d-flex gap-3 align-items-center pb-1">
-                                <div class="badge rounded bg-label-warning p-1"><i class="ti ti-clock ti-sm"></i></div>
-                                <div>
-                                    <h6 class="mb-0 text-nowrap">Response Time</h6>
-                                    <small class="text-muted">1 Day</small>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="col-12 col-sm-8 col-md-12 col-lg-8">
-                        <div id="supportTracker"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!--/ Support Tracker -->
+<!-- PASIEN DASHBOARD  (role = 2) -->
+<?php if ($role == '2'): ?>
+    <div class="spk-db">
 
-    <!-- Sales By Country -->
-    <div class="col-xl-4 col-md-6 mb-4">
-        <div class="card h-100">
-            <div class="card-header d-flex justify-content-between">
-                <div class="card-title mb-0">
-                    <h5 class="m-0 me-2">Sales by Countries</h5>
-                    <small class="text-muted">Monthly Sales Overview</small>
+        <div class="spk-hero shadow-lg rounded">
+            <div class="spk-hero-inner">
+                <div>
+                    <div class="spk-hero-tag"><i class="ti ti-heart-rate-monitor"></i> Deteksi Dini Tumor Payudara</div>
+                    <h1>Selamat datang, <em><?= html_escape($current_user_name) ?></em></h1>
+                    <p>Pantau riwayat deteksi dini kamu, lihat hasil diagnosis, dan akses materi edukasi untuk menjaga
+                        kesehatan payudara kamu.</p>
+                    <div class="spk-hero-btns">
+                        <a href="<?= base_url('deteksiDini') ?>" class="spk-btn-pink"><i class="ti ti-stethoscope"></i>
+                            Mulai Deteksi</a>
+                        <a href="<?= base_url('riwayatDiagnosis') ?>" class="spk-btn-ghost"><i
+                                class="ti ti-clipboard-list"></i> Riwayat Saya</a>
+                    </div>
                 </div>
-                <div class="dropdown">
-                    <button class="btn p-0" type="button" id="salesByCountry" data-bs-toggle="dropdown"
-                        aria-haspopup="true" aria-expanded="false">
-                        <i class="ti ti-dots-vertical ti-sm text-muted"></i>
-                    </button>
-                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="salesByCountry">
-                        <a class="dropdown-item" href="javascript:void(0);">Download</a>
-                        <a class="dropdown-item" href="javascript:void(0);">Refresh</a>
-                        <a class="dropdown-item" href="javascript:void(0);">Share</a>
+                <div class="spk-hero-box">
+                    <div class="spk-hero-box-title">Statistik Kamu</div>
+                    <div class="spk-hstat">
+                        <div class="spk-hstat-label">Total diagnosis saya</div>
+                        <div class="spk-hstat-val"><?= (int) ($summary['my_total_diagnosa'] ?? 0) ?></div>
+                        <div class="spk-hstat-sub">pemeriksaan tersimpan</div>
+                    </div>
+                    <div class="spk-hstat">
+                        <div class="spk-hstat-label">Diagnosis bulan ini</div>
+                        <div class="spk-hstat-val"><?= (int) ($summary['my_monthly_diagnosa'] ?? 0) ?></div>
+                        <div class="spk-hstat-sub">kasus bulan berjalan</div>
+                    </div>
+                    <div class="spk-hstat">
+                        <div class="spk-hstat-label">Rata-rata skor risiko</div>
+                        <div class="spk-hstat-val"><?= number_format((float) ($summary['my_average_persen'] ?? 0), 1) ?>%
+                        </div>
+                        <div class="spk-hstat-sub">dari seluruh diagnosis kamu</div>
                     </div>
                 </div>
             </div>
-            <div class="card-body">
-                <ul class="p-0 m-0">
-                    <li class="d-flex align-items-center mb-4">
-                        <img src="<?= $assets_admin ?>svg/flags/us.svg" alt="User" class="rounded-circle me-3"
-                            width="34" />
-                        <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                            <div class="me-2">
-                                <div class="d-flex align-items-center">
-                                    <h6 class="mb-0 me-1">$8,567k</h6>
-                                </div>
-                                <small class="text-muted">United states</small>
-                            </div>
-                            <div class="user-progress">
-                                <p class="text-success fw-semibold mb-0">
-                                    <i class="ti ti-chevron-up"></i>
-                                    25.8%
-                                </p>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="d-flex align-items-center mb-4">
-                        <img src="<?= $assets_admin ?>svg/flags/br.svg" alt="User" class="rounded-circle me-3"
-                            width="34" />
-                        <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                            <div class="me-2">
-                                <div class="d-flex align-items-center">
-                                    <h6 class="mb-0 me-1">$2,415k</h6>
-                                </div>
-                                <small class="text-muted">Brazil</small>
-                            </div>
-                            <div class="user-progress">
-                                <p class="text-danger fw-semibold mb-0">
-                                    <i class="ti ti-chevron-down"></i>
-                                    6.2%
-                                </p>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="d-flex align-items-center mb-4">
-                        <img src="<?= $assets_admin ?>svg/flags/in.svg" alt="User" class="rounded-circle me-3"
-                            width="34" />
-                        <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                            <div class="me-2">
-                                <div class="d-flex align-items-center">
-                                    <h6 class="mb-0 me-1">$865k</h6>
-                                </div>
-                                <small class="text-muted">India</small>
-                            </div>
-                            <div class="user-progress">
-                                <p class="text-success fw-semibold">
-                                    <i class="ti ti-chevron-up"></i>
-                                    12.4%
-                                </p>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="d-flex align-items-center mb-4">
-                        <img src="<?= $assets_admin ?>svg/flags/au.svg" alt="User" class="rounded-circle me-3"
-                            width="34" />
-                        <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                            <div class="me-2">
-                                <div class="d-flex align-items-center">
-                                    <h6 class="mb-0 me-1">$745k</h6>
-                                </div>
-                                <small class="text-muted">Australia</small>
-                            </div>
-                            <div class="user-progress">
-                                <p class="text-danger fw-semibold mb-0">
-                                    <i class="ti ti-chevron-down"></i>
-                                    11.9%
-                                </p>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="d-flex align-items-center mb-4">
-                        <img src="<?= $assets_admin ?>svg/flags/fr.svg" alt="User" class="rounded-circle me-3"
-                            width="34" />
-                        <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                            <div class="me-2">
-                                <div class="d-flex align-items-center">
-                                    <h6 class="mb-0 me-1">$45</h6>
-                                </div>
-                                <small class="text-muted">France</small>
-                            </div>
-                            <div class="user-progress">
-                                <p class="text-success fw-semibold mb-0">
-                                    <i class="ti ti-chevron-up"></i>
-                                    16.2%
-                                </p>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="d-flex align-items-center">
-                        <img src="<?= $assets_admin ?>svg/flags/cn.svg" alt="User" class="rounded-circle me-3"
-                            width="34" />
-                        <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                            <div class="me-2">
-                                <div class="d-flex align-items-center">
-                                    <h6 class="mb-0 me-1">$12k</h6>
-                                </div>
-                                <small class="text-muted">China</small>
-                            </div>
-                            <div class="user-progress">
-                                <p class="text-success fw-semibold mb-0">
-                                    <i class="ti ti-chevron-up"></i>
-                                    14.8%
-                                </p>
-                            </div>
-                        </div>
-                    </li>
-                </ul>
-            </div>
         </div>
-    </div>
-    <!--/ Sales By Country -->
 
-    <!-- Total Earning -->
-    <div class="col-12 col-xl-4 mb-4 col-md-6">
-        <div class="card">
-            <div class="card-header d-flex justify-content-between pb-1">
-                <h5 class="mb-0 card-title">Total Earning</h5>
-                <div class="dropdown">
-                    <button class="btn p-0" type="button" id="totalEarning" data-bs-toggle="dropdown"
-                        aria-haspopup="true" aria-expanded="false">
-                        <i class="ti ti-dots-vertical ti-sm text-muted"></i>
-                    </button>
-                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="totalEarning">
-                        <a class="dropdown-item" href="javascript:void(0);">View More</a>
-                        <a class="dropdown-item" href="javascript:void(0);">Delete</a>
+        <div class="spk-stat-grid">
+            <div class="card spk-card shadow-sm">
+                <div class="card-body">
+                    <div class="spk-stat-top">
+                        <div class="spk-stat-icon si-pink"><i class="ti ti-clipboard-list"></i></div>
                     </div>
+                    <h2 class="fw-bold mb-1"><?= (int) ($summary['my_total_diagnosa'] ?? 0) ?></h2>
+                    <div class="spk-stat-label">Total Diagnosis</div>
+                    <div class="spk-stat-hint">Seluruh riwayat pemeriksaan kamu</div>
                 </div>
             </div>
-            <div class="card-body">
-                <div class="d-flex align-items-center">
-                    <h1 class="mb-0 me-2">87%</h1>
-                    <i class="ti ti-chevron-up text-success me-1"></i>
-                    <p class="text-success mb-0">25.8%</p>
+            <div class="card spk-card shadow-sm">
+                <div class="card-body">
+                    <div class="spk-stat-top">
+                        <div class="spk-stat-icon si-teal"><i class="ti ti-shield-check"></i></div>
+                    </div>
+                    <h2 class="fw-bold mb-1"><?= (int) ($summary['my_low_risk'] ?? 0) ?></h2>
+                    <div class="spk-stat-label">Risiko Rendah</div>
+                    <div class="spk-stat-hint">Hasil deteksi level aman</div>
                 </div>
-                <div id="totalEarningChart"></div>
-                <div class="d-flex align-items-start my-4">
-                    <div class="badge rounded bg-label-primary p-2 me-3 rounded">
-                        <i class="ti ti-currency-dollar ti-sm"></i>
+            </div>
+            <div class="card spk-card shadow-sm">
+                <div class="card-body">
+                    <div class="spk-stat-top">
+                        <div class="spk-stat-icon si-amber"><i class="ti ti-alert-triangle"></i></div>
                     </div>
-                    <div class="d-flex justify-content-between w-100 gap-2 align-items-center">
-                        <div class="me-2">
-                            <h6 class="mb-0">Total Sales</h6>
-                            <small class="text-muted">Refund</small>
-                        </div>
-                        <p class="mb-0 text-success">+$98</p>
-                    </div>
+                    <h2 class="fw-bold mb-1"><?= (int) ($summary['my_mid_risk'] ?? 0) ?></h2>
+                    <div class="spk-stat-label">Risiko Sedang</div>
+                    <div class="spk-stat-hint">Perlu pemantauan lebih lanjut</div>
                 </div>
-                <div class="d-flex align-items-start">
-                    <div class="badge rounded bg-label-secondary p-2 me-3 rounded">
-                        <i class="ti ti-brand-paypal ti-sm"></i>
+            </div>
+            <div class="card spk-card shadow-sm">
+                <div class="card-body">
+                    <div class="spk-stat-top">
+                        <div class="spk-stat-icon si-violet"><i class="ti ti-activity-heartbeat"></i></div>
                     </div>
-                    <div class="d-flex justify-content-between w-100 gap-2 align-items-center">
-                        <div class="me-2">
-                            <h6 class="mb-0">Total Revenue</h6>
-                            <small class="text-muted">Client Payment</small>
-                        </div>
-                        <p class="mb-0 text-success">+$126</p>
-                    </div>
+                    <h2 class="fw-bold mb-1"><?= (int) ($summary['my_high_risk'] ?? 0) ?></h2>
+                    <div class="spk-stat-label">Risiko Tinggi</div>
+                    <div class="spk-stat-hint">Segera konsultasi ke dokter</div>
                 </div>
             </div>
         </div>
-    </div>
-    <!--/ Total Earning -->
 
-    <!-- Monthly Campaign State -->
-    <div class="col-xl-4 col-md-6 mb-4">
-        <div class="card h-100">
-            <div class="card-header d-flex justify-content-between">
-                <div class="card-title mb-0">
-                    <h5 class="mb-0">Monthly Campaign State</h5>
-                    <small class="text-muted">8.52k Social Visiters</small>
-                </div>
-                <div class="dropdown">
-                    <button class="btn p-0" type="button" id="MonthlyCampaign" data-bs-toggle="dropdown"
-                        aria-haspopup="true" aria-expanded="false">
-                        <i class="ti ti-dots-vertical ti-sm text-muted"></i>
-                    </button>
-                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="MonthlyCampaign">
-                        <a class="dropdown-item" href="javascript:void(0);">Refresh</a>
-                        <a class="dropdown-item" href="javascript:void(0);">Download</a>
-                        <a class="dropdown-item" href="javascript:void(0);">View All</a>
-                    </div>
-                </div>
-            </div>
-            <div class="card-body">
-                <ul class="p-0 m-0">
-                    <li class="mb-4 pb-1 d-flex justify-content-between align-items-center">
-                        <div class="badge bg-label-success rounded p-2"><i class="ti ti-mail ti-sm"></i></div>
-                        <div class="d-flex justify-content-between w-100 flex-wrap">
-                            <h6 class="mb-0 ms-3">Emails</h6>
-                            <div class="d-flex">
-                                <p class="mb-0 fw-semibold">12,346</p>
-                                <p class="ms-3 text-success mb-0">0.3%</p>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="mb-4 pb-1 d-flex justify-content-between align-items-center">
-                        <div class="badge bg-label-info rounded p-2"><i class="ti ti-link ti-sm"></i></div>
-                        <div class="d-flex justify-content-between w-100 flex-wrap">
-                            <h6 class="mb-0 ms-3">Opened</h6>
-                            <div class="d-flex">
-                                <p class="mb-0 fw-semibold">8,734</p>
-                                <p class="ms-3 text-success mb-0">2.1%</p>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="mb-4 pb-1 d-flex justify-content-between align-items-center">
-                        <div class="badge bg-label-warning rounded p-2"><i class="ti ti-click ti-sm"></i></div>
-                        <div class="d-flex justify-content-between w-100 flex-wrap">
-                            <h6 class="mb-0 ms-3">Clicked</h6>
-                            <div class="d-flex">
-                                <p class="mb-0 fw-semibold">967</p>
-                                <p class="ms-3 text-success mb-0">1.4%</p>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="mb-4 pb-1 d-flex justify-content-between align-items-center">
-                        <div class="badge bg-label-primary rounded p-2"><i class="ti ti-users ti-sm"></i></div>
-                        <div class="d-flex justify-content-between w-100 flex-wrap">
-                            <h6 class="mb-0 ms-3">Subscribe</h6>
-                            <div class="d-flex">
-                                <p class="mb-0 fw-semibold">345</p>
-                                <p class="ms-3 text-success mb-0">8.5k</p>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="mb-4 pb-1 d-flex justify-content-between align-items-center">
-                        <div class="badge bg-label-secondary rounded p-2">
-                            <i class="ti ti-alert-triangle ti-sm text-body"></i>
-                        </div>
-                        <div class="d-flex justify-content-between w-100 flex-wrap">
-                            <h6 class="mb-0 ms-3">Complaints</h6>
-                            <div class="d-flex">
-                                <p class="mb-0 fw-semibold">10</p>
-                                <p class="ms-3 text-success mb-0">1.5%</p>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="d-flex justify-content-between align-items-center">
-                        <div class="badge bg-label-danger rounded p-2"><i class="ti ti-ban ti-sm"></i></div>
-                        <div class="d-flex justify-content-between w-100 flex-wrap">
-                            <h6 class="mb-0 ms-3">Unsubscribe</h6>
-                            <div class="d-flex">
-                                <p class="mb-0 fw-semibold">86</p>
-                                <p class="ms-3 text-success mb-0">0.8%</p>
-                            </div>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div>
-    <!--/ Monthly Campaign State -->
+        <div class="spk-two">
 
-    <!-- Source Visit -->
-    <div class="col-xl-4 col-md-6 order-2 order-lg-1">
-        <div class="card">
-            <div class="card-header d-flex justify-content-between">
-                <div class="card-title mb-0">
-                    <h5 class="mb-0">Source Visits</h5>
-                    <small class="text-muted">38.4k Visitors</small>
-                </div>
-                <div class="dropdown">
-                    <button class="btn p-0" type="button" id="sourceVisits" data-bs-toggle="dropdown"
-                        aria-haspopup="true" aria-expanded="false">
-                        <i class="ti ti-dots-vertical ti-sm text-muted"></i>
-                    </button>
-                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="sourceVisits">
-                        <a class="dropdown-item" href="javascript:void(0);">Refresh</a>
-                        <a class="dropdown-item" href="javascript:void(0);">Download</a>
-                        <a class="dropdown-item" href="javascript:void(0);">View All</a>
+            <!-- Riwayat Diagnosis Terbaru -->
+            <div class="card">
+                <div class="spk-panel-head">
+                    <div class="gap-2">
+                        <h6 class="my-md-0 fw-bold">Riwayat Diagnosis Terbaru</h6>
+                        <p class="fs-6 my-md-0">Lima hasil deteksi terakhir yang tersimpan</p>
                     </div>
+                    <a href="<?= base_url('riwayatDiagnosis') ?>" class="spk-btn-outline"><i class="ti ti-table"></i> 
+                    <span class="d-none d-md-inline">Lihat Semua</span></a>
+                </div>
+                <div class="card-body">
+                    <?php if (!empty($latest_diagnoses)): ?>
+                        <div class="spk-diag-grid">
+                            <?php foreach ($latest_diagnoses as $row):
+                                $rm = $formatRisk($row->level, (string) $row->risiko_name);
+                                ?>
+                                <div class="spk-dcard">
+                                    <div class="spk-dcard-top">
+                                        <div>
+                                            <h5 class="my-md-0 fw-bold"><?= html_escape($row->risiko_name ?: 'Hasil Deteksi') ?>
+                                            </h5>
+                                            <p class="my-md-1 fs-tiny fw-normal">
+                                                <?= date('d M Y, H:i', strtotime($row->created_at)) ?></p>
+                                        </div>
+                                        <span class="spk-badge <?= $rm['badge'] ?>"><?= $rm['label'] ?></span>
+                                    </div>
+                                    <div>
+                                        <div class="d-flex justify-content-between mb-1">
+                                            <span class="fs-tiny text-muted">Skor Risiko</span>
+                                            <span class="fs-tiny fw-bold"
+                                                style="color:<?= $rm['color'] ?>"><?= (int) $row->persen ?>%</span>
+                                        </div>
+                                        <div class="spk-bar-wrap">
+                                            <div class="spk-bar"
+                                                style="width:<?= (int) $row->persen ?>%;background:<?= $rm['color'] ?>"></div>
+                                        </div>
+                                    </div>
+                                    <div class="spk-dcard-foot">
+                                        <span class="my-md-1 fs-tiny fw-normal text-muted">
+                                            <i class="ti ti-calendar-event ti-xs text-primary"></i>
+                                            <?= date('d M Y', strtotime($row->created_at)) ?>
+                                        </span>
+                                        <a href="<?= base_url('deteksiDini/unduh/' . $row->id) ?>" class="spk-btn-dl"><i
+                                                class="ti ti-download"></i> Unduh</a>
+                                    </div>
+                                </div>
+                            <?php endforeach; ?>
+                        </div>
+                    <?php else: ?>
+                        <div class="spk-empty">
+                            <i class="ti ti-report-analytics"></i>
+                            <p>Kamu belum pernah melakukan deteksi dini.<br>Mulai sekarang untuk memantau kesehatanmu!</p>
+                            <a href="<?= base_url('deteksiDini') ?>" class="spk-btn-pink mt-3 d-inline-flex"><i
+                                    class="ti ti-stethoscope"></i> Mulai Deteksi Pertama</a>
+                        </div>
+                    <?php endif; ?>
                 </div>
             </div>
-            <div class="card-body">
-                <ul class="list-unstyled mb-0">
-                    <li class="mb-3 pb-1">
-                        <div class="d-flex align-items-start">
-                            <div class="badge bg-label-secondary p-2 me-3 rounded">
-                                <i class="ti ti-shadow ti-sm"></i>
-                            </div>
-                            <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
-                                <div class="me-2">
-                                    <h6 class="mb-0">Direct Source</h6>
-                                    <small class="text-muted">Direct link click</small>
-                                </div>
-                                <div class="d-flex align-items-center">
-                                    <p class="mb-0">1.2k</p>
-                                    <div class="ms-3 badge bg-label-success">+4.2%</div>
-                                </div>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="mb-3 pb-1">
-                        <div class="d-flex align-items-start">
-                            <div class="badge bg-label-secondary p-2 me-3 rounded">
-                                <i class="ti ti-globe ti-sm"></i>
-                            </div>
-                            <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
-                                <div class="me-2">
-                                    <h6 class="mb-0">Social Network</h6>
-                                    <small class="text-muted">Social Channels</small>
-                                </div>
-                                <div class="d-flex align-items-center">
-                                    <p class="mb-0">31.5k</p>
-                                    <div class="ms-3 badge bg-label-success">+8.2%</div>
-                                </div>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="mb-3 pb-1">
-                        <div class="d-flex align-items-start">
-                            <div class="badge bg-label-secondary p-2 me-3 rounded">
-                                <i class="ti ti-mail ti-sm"></i>
-                            </div>
-                            <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
-                                <div class="me-2">
-                                    <h6 class="mb-0">Email Newsletter</h6>
-                                    <small class="text-muted">Mail Campaigns</small>
-                                </div>
-                                <div class="d-flex align-items-center">
-                                    <p class="mb-0">893</p>
-                                    <div class="ms-3 badge bg-label-success">+2.4%</div>
-                                </div>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="mb-3 pb-1">
-                        <div class="d-flex align-items-start">
-                            <div class="badge bg-label-secondary p-2 me-3 rounded">
-                                <i class="ti ti-external-link ti-sm"></i>
-                            </div>
-                            <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
-                                <div class="me-2">
-                                    <h6 class="mb-0">Referrals</h6>
-                                    <small class="text-muted">Impact Radius Visits</small>
-                                </div>
-                                <div class="d-flex align-items-center">
-                                    <p class="mb-0">342</p>
-                                    <div class="ms-3 badge bg-label-danger">-0.4%</div>
-                                </div>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="mb-3 pb-1">
-                        <div class="d-flex align-items-start">
-                            <div class="badge bg-label-secondary p-2 me-3 rounded">
-                                <i class="ti ti-discount-2 ti-sm"></i>
-                            </div>
-                            <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
-                                <div class="me-2">
-                                    <h6 class="mb-0">ADVT</h6>
-                                    <small class="text-muted">Google ADVT</small>
-                                </div>
-                                <div class="d-flex align-items-center">
-                                    <p class="mb-0">2.15k</p>
-                                    <div class="ms-3 badge bg-label-success">+9.1%</div>
-                                </div>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="mb-2">
-                        <div class="d-flex align-items-start">
-                            <div class="badge bg-label-secondary p-2 me-3 rounded">
-                                <i class="ti ti-star ti-sm"></i>
-                            </div>
-                            <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
-                                <div class="me-2">
-                                    <h6 class="mb-0">Other</h6>
-                                    <small class="text-muted">Many Sources</small>
-                                </div>
-                                <div class="d-flex align-items-center">
-                                    <p class="mb-0">12.5k</p>
-                                    <div class="ms-3 badge bg-label-success">+6.2%</div>
-                                </div>
-                            </div>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div>
-    <!--/ Source Visit -->
 
-    <!-- Projects table -->
-    <div class="col-12 col-xl-8 col-sm-12 order-1 order-lg-2 mb-4 mb-lg-0">
-        <div class="card">
-            <div class="card-datatable table-responsive">
-                <table class="datatables-projects table border-top">
-                    <thead>
-                        <tr>
-                            <th></th>
-                            <th></th>
-                            <th>Name</th>
-                            <th>Leader</th>
-                            <th>Team</th>
-                            <th class="w-px-200">Status</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                </table>
+            <!-- Insight + Saran + Quick Links -->
+            <div class="card">
+                <?php if ($highest_risk_case):
+                    $tRM = $formatRisk($highest_risk_case->level, (string) $highest_risk_case->risiko_name);
+                    ?>
+                    <div class="spk-insight-hero rounded-top">
+                        <div class="spk-ih-tag">Diagnosis Paling Berisiko</div>
+                        <div class="spk-ih-name"><?= html_escape($highest_risk_case->risiko_name ?: 'Hasil Deteksi') ?></div>
+                        <div class="spk-ih-meta"><?= (int) $highest_risk_case->persen ?>% skor &bull;
+                            <?= date('d M Y H:i', strtotime($highest_risk_case->created_at)) ?></div>
+                        <div class="spk-ih-bdg"><span class="spk-badge <?= $tRM['badge'] ?>"><?= $tRM['label'] ?></span></div>
+                    </div>
+                <?php else: ?>
+                    <div class="spk-insight-hero rounded-top">
+                        <div class="spk-ih-tag">Diagnosis Paling Berisiko</div>
+                        <div class="spk-ih-name" style="color:rgba(255,255,255,.35)">Belum ada data diagnosis.</div>
+                    </div>
+                <?php endif; ?>
+
+                <div class="spk-insight-body">
+
+                    <?php
+                    $level = $highest_risk_case ? (int) $highest_risk_case->level : 0;
+                    $saranMap = [
+                        1 => ['icon' => 'ti-circle-check', 'color' => '#10b981', 'bg' => 'rgba(16,185,129,.08)', 'border' => '#10b98133', 'title' => 'Status Aman', 'text' => 'Hasil deteksi terakhir kamu menunjukkan risiko rendah. Tetap lakukan SADARI rutin setiap bulan.'],
+                        2 => ['icon' => 'ti-alert-triangle', 'color' => '#f59e0b', 'bg' => 'rgba(245,158,11,.08)', 'border' => '#f59e0b33', 'title' => 'Perlu Perhatian', 'text' => 'Ada indikasi risiko sedang. Disarankan untuk berkonsultasi dengan tenaga medis dalam waktu dekat.'],
+                        3 => ['icon' => 'ti-urgent', 'color' => '#ec4899', 'bg' => 'rgba(236,72,153,.08)', 'border' => '#ec489933', 'title' => 'Segera Konsultasi', 'text' => 'Hasil deteksi menunjukkan risiko tinggi. Segera temui dokter untuk pemeriksaan lebih lanjut.'],
+                    ];
+                    $saran = $saranMap[$level] ?? ['icon' => 'ti-stethoscope', 'color' => '#94a3b8', 'bg' => 'rgba(148,163,184,.08)', 'border' => '#94a3b833', 'title' => 'Mulai Deteksi', 'text' => 'Kamu belum memiliki riwayat deteksi. Lakukan deteksi dini sekarang untuk memantau kesehatanmu.'];
+                    ?>
+                    <div class="rounded px-3 py-3"
+                        style="background:<?= $saran['bg'] ?>;border:1px solid <?= $saran['border'] ?>;">
+                        <div class="d-flex align-items-start gap-2">
+                            <i class="ti <?= $saran['icon'] ?> mt-1 flex-shrink-0"
+                                style="color:<?= $saran['color'] ?>;font-size:1.1rem;"></i>
+                            <div>
+                                <div class="fw-bold mb-1" style="font-size:.82rem;color:<?= $saran['color'] ?>">
+                                    <?= $saran['title'] ?></div>
+                                <div class="text-muted" style="font-size:.75rem;line-height:1.5"><?= $saran['text'] ?></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="d-flex flex-column gap-2">
+                        <a href="<?= base_url('deteksiDini') ?>" class="text-decoration-none">
+                            <div class="spk-link-card border rounded">
+                                <div class="d-flex justify-content-between align-items-center px-3 py-3 px-md-3 py-md-3">
+                                    <div>
+                                        <h6 class="my-md-0 fw-bold">Deteksi Dini Baru</h6>
+                                        <div class="small text-muted">Mulai pemeriksaan sekarang</div>
+                                    </div>
+                                    <i class="ti ti-arrow-right"></i>
+                                </div>
+                            </div>
+                        </a>
+                        <a href="<?= base_url('riwayatDiagnosis') ?>" class="text-decoration-none">
+                            <div class="spk-link-card border rounded">
+                                <div class="d-flex justify-content-between align-items-center px-3 py-3 px-md-3 py-md-3">
+                                    <div>
+                                        <h6 class="my-md-0 fw-bold">Riwayat Diagnosis</h6>
+                                        <div class="small text-muted">Lihat semua hasil deteksi</div>
+                                    </div>
+                                    <i class="ti ti-arrow-right"></i>
+                                </div>
+                            </div>
+                        </a>
+                        <a href="<?= base_url('edukasi') ?>" class="text-decoration-none">
+                            <div class="spk-link-card border rounded">
+                                <div class="d-flex justify-content-between align-items-center px-3 py-3 px-md-3 py-md-3">
+                                    <div>
+                                        <h6 class="my-md-0 fw-bold">Edukasi &amp; SADARI</h6>
+                                        <div class="small text-muted">Materi pencegahan kanker payudara</div>
+                                    </div>
+                                    <i class="ti ti-arrow-right"></i>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+
+                </div>
             </div>
         </div>
+
     </div>
-    <div class="card card-action mb-4">
-        <div class="card-header align-items-center">
-            <h5 class="card-action-title mb-0">Payment Methods</h5>
-            <div class="card-action-element">
-                <button class="btn btn-primary btn-sm" type="button" data-bs-toggle="modal"
-                    data-bs-target="#addNewCCModal">
-                    <i class="ti ti-plus ti-xs me-1"></i>Add Card
-                </button>
-            </div>
-        </div>
-        <div class="card-body">
-            <div class="added-cards">
-                <div class="cardMaster border p-3 rounded mb-3">
-                    <div class="d-flex justify-content-between flex-sm-row flex-column">
-                        <div class="card-information">
-                            <img class="mb-3 img-fluid" src="../../assets/img/icons/payments/mastercard.png"
-                                alt="Master Card" />
-                            <h6 class="mb-2 pt-1">Kaith Morrison</h6>
-                            <span class="card-number">&#8727;&#8727;&#8727;&#8727; &#8727;&#8727;&#8727;&#8727;
-                                &#8727;&#8727;&#8727;&#8727;
-                                9856</span>
-                        </div>
-                        <div class="d-flex flex-column text-start text-lg-end">
-                            <div class="d-flex order-sm-0 order-1 mt-3">
-                                <button class="btn btn-label-primary me-3" data-bs-toggle="modal"
-                                    data-bs-target="#editCCModal">
-                                    Edit
-                                </button>
-                                <button class="btn btn-label-secondary">Delete</button>
-                            </div>
-                            <small class="mt-sm-auto mt-2 order-sm-1 order-0">Card expires at 12/26</small>
-                        </div>
-                    </div>
-                </div>
-                <div class="cardMaster border p-3 rounded mb-3">
-                    <div class="d-flex justify-content-between flex-sm-row flex-column">
-                        <div class="card-information">
-                            <img class="mb-3 img-fluid" src="../../assets/img/icons/payments/visa.png"
-                                alt="Master Card" />
-                            <div class="d-flex align-items-center mb-2 pt-1">
-                                <h6 class="mb-0 me-3">Tom McBride</h6>
-                                <span class="badge bg-label-primary me-1">Primary</span>
-                            </div>
-                            <span class="card-number">&#8727;&#8727;&#8727;&#8727; &#8727;&#8727;&#8727;&#8727;
-                                &#8727;&#8727;&#8727;&#8727;
-                                6542</span>
-                        </div>
-                        <div class="d-flex flex-column text-start text-lg-end">
-                            <div class="d-flex order-sm-0 order-1 mt-3">
-                                <button class="btn btn-label-primary me-3" data-bs-toggle="modal"
-                                    data-bs-target="#editCCModal">
-                                    Edit
-                                </button>
-                                <button class="btn btn-label-secondary">Delete</button>
-                            </div>
-                            <small class="mt-sm-auto mt-2 order-sm-1 order-0">Card expires at 10/24</small>
-                        </div>
-                    </div>
-                </div>
-                <div class="cardMaster border p-3 rounded">
-                    <div class="d-flex justify-content-between flex-sm-row flex-column">
-                        <div class="card-information">
-                            <img class="mb-3 img-fluid" src="../../assets/img/icons/payments/american-ex.png"
-                                alt="Visa Card" />
-                            <h6 class="mb-2 pt-1">Mildred Wagner</h6>
-                            <span class="card-number">&#8727;&#8727;&#8727;&#8727; &#8727;&#8727;&#8727;&#8727;
-                                &#8727;&#8727;&#8727;&#8727;
-                                5896</span>
-                        </div>
-                        <div class="d-flex flex-column text-start text-lg-end">
-                            <div class="d-flex order-sm-0 order-1 mt-3">
-                                <button class="btn btn-label-primary me-3" data-bs-toggle="modal"
-                                    data-bs-target="#editCCModal">
-                                    Edit
-                                </button>
-                                <button class="btn btn-label-secondary">Delete</button>
-                            </div>
-                            <small class="mt-sm-auto mt-2 order-sm-1 order-0">Card expires at 10/27</small>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- / Projects table
-</div>
+<?php endif; ?>

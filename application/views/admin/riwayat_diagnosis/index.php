@@ -4,7 +4,7 @@
     </div>
     <div class="px-3" id="dataPasienSearchSection" data-search-url="<?= base_url('riwayatDiagnosis/search') ?>">
         <input type="text" id="searchInput" class="form-control form-control-sm w-100 mb-2"
-            placeholder="Search by nik or name" />
+            placeholder="Search by name" />
     </div>
 
     <!-- Date Inputs -->

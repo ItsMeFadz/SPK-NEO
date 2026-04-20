@@ -15,28 +15,34 @@ class Auth extends CI_Controller
 
         $user = $this->UserModels->getByUsername($username);
 
-        if ($user && password_verify($password, $user->password)) {
+        if ($user && password_verify($password, $user->password))
+        {
 
             $data = [
                 'id' => $user->id,
                 'name' => $user->name,
+                'role' => $user->role,
+                'foto' => $user->foto,
                 'login' => true
             ];
 
             $this->session->set_userdata($data);
 
-            log_message('debug', 'User data: ' . json_encode($this->session->userdata()));
             redirect('dashboard');
 
-        } else {
-            echo "Login gagal";
+        }
+        else
+        {
+            // ✅ pakai flashdata
+            $this->session->set_flashdata('error', 'Username atau password salah');
+            redirect('/');
         }
     }
 
     public function register()
     {
         $name = $this->input->post('name');
-        $username = $name; 
+        $username = $name;
         $tgl_lahir = $this->input->post('tgl_lahir');
         $usia = $this->input->post('usia');
         $alamat = $this->input->post('alamat');

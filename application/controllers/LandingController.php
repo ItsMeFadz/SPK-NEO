@@ -17,4 +17,14 @@ class LandingController extends CI_Controller {
 	{
 		$this->load->view('landing/referensi');
 	}
+
+	public function referensiPenanganan()
+	{
+		$this->load->view('landing/referensi_penanganan');
+	}
+
+	public function referensiSadari()
+	{
+		$this->load->view('landing/referensi_sadari');
+	}
 }

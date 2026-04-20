@@ -5,7 +5,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $route['default_controller'] = 'LandingController';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
+
+// Public Menu
 $route['referensi'] = 'LandingController/referensi';
+$route['referensiPenanganan'] = 'LandingController/referensiPenanganan';
+$route['referensiSadari'] = 'LandingController/referensiSadari';
 
 $route['auth/register'] = 'Auth/register';
 $route['auth/process'] = 'Auth/process';
@@ -21,6 +25,9 @@ $route['deteksiDini/unduh/(:num)'] = 'DeteksiDiniController/unduh/$1';
 $route['riwayatDiagnosis'] = 'RiwayatDiagnosisController';
 $route['riwayatDiagnosis/hasil/(:num)'] = 'RiwayatDiagnosisController/hasil/$1';
 $route['riwayatDiagnosis/search'] = 'RiwayatDiagnosisController/search';
+
+$route['edukasi'] = 'EdukasiController';
+
 
 // Admin Menu
 $route['dashboard'] = 'DashboardController';

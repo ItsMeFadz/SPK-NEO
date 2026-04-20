@@ -130,7 +130,7 @@
             <img src="http://localhost/SPK-NEO/assets/admin/img/icons/brands/lamp.png" alt=""
                 style="height: 33px; width: 33px;">
         </span>
-        <h3 class="card-action-title mb-0">Rekomendasi Tindakan</h3>
+        <h4 class="card-action-title mb-0">Rekomendasi Tindakan</h4>
     </div>
     <div class="card-body">
         <div class="col-md-12">

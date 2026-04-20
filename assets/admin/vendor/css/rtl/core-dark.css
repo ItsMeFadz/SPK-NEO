@@ -12250,7 +12250,7 @@ html:not([dir=rtl]) .card .card-separator {
 }
 
 .fs-tiny {
-  font-size: 70% !important;
+  font-size: 80% !important;
 }
 
 .fs-big {
@@ -23262,4 +23262,17 @@ a.bg-vimeo:hover, a.bg-vimeo:focus {
 }
 .footer.bg-lighter hr {
   border-color: rgba(207, 211, 236, 0.15);
+}
+
+
+.spk-dcard {
+    background: #2F3349 !important;
+    border-color: rgba(207, 211, 236, 0.15) !important;
+    /* box-shadow: 0 6px 18px rgba(0,0,0,0.35) !important; */
+}
+
+.spk-dcard:hover { 
+  border-color:#ec4899 !important; 
+  box-shadow: 0 8px 28px rgba(236,72,153,0.11) !important; 
+  transform:translateY(-2px); 
 }
