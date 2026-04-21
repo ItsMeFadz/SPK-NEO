@@ -431,6 +431,16 @@
 
     <script src="<?= base_url('assets/landing/js/main.js') ?>"></script>
     <script src="<?= base_url('assets/admin/js/toasts-custom.js') ?>"></script>
+    <script>
+        <?php if ($this->session->flashdata('error')): ?>
+            window.toastDetails.error.text = '<?= addslashes($this->session->flashdata('error')) ?>';
+            createToast('error');
+        <?php endif; ?>
+        <?php if ($this->session->flashdata('success')): ?>
+            window.toastDetails.success.text = '<?= addslashes($this->session->flashdata('success')) ?>';
+            createToast('success');
+        <?php endif; ?>
+    </script>
 
 </body>
 

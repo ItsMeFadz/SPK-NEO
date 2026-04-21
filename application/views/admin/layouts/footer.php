@@ -6,7 +6,7 @@
                 <script>
                     document.write(new Date().getFullYear());
                 </script>
-                , made with ❤️ by <a href="https://pixinvent.com" target="_blank" class="fw-semibold">Cihuy</a>
+                , made with ❤️ by <a href="#" target="_blank" class="fw-semibold">Cihuy</a>
             </div>
         </div>
     </div>
