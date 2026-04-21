@@ -60,7 +60,8 @@ class DeteksiDiniController extends MY_Controller
 		$dataDiagnosa = [
 			'user_id' => (int) $this->session->userdata('id'),
 			'risiko_id' => $hasilForwardChaining['risiko']->risiko_id,
-			'persen' => $this->getPersenByLevel((int) $hasilForwardChaining['risiko']->level),
+			// 'persen' => $this->getPersenByLevel((int) $hasilForwardChaining['risiko']->level),
+			'persen' => round($hasilForwardChaining['persen']),
 			'created_at' => date('Y-m-d H:i:s')
 		];
 
@@ -93,7 +94,7 @@ class DeteksiDiniController extends MY_Controller
 		$this->load->view('admin/main', $data);
 	}
 
-	public function unduh ($id)
+	public function unduh($id)
 	{
 		$data = $this->buildDiagnosaViewData($id);
 		$data['logo_path'] = $this->getImageDataUri(FCPATH . 'assets/admin/img/icons/brands/cancer-HD.png');
@@ -181,6 +182,20 @@ class DeteksiDiniController extends MY_Controller
 		}
 
 		$evaluasi = [];
+
+		if (array_sum($jawaban) === 0)
+		{
+			return [
+				'risiko' => (object) [
+					'risiko_id' => 1, // ID Risiko Rendah
+					'level' => 1,
+					'name' => 'Tidak Terindikasi',
+					'deskripsi' => '',
+					'saran' => ''
+				],
+				'persen' => 0 
+			];
+		}
 
 		foreach ($rules as $rule)
 		{

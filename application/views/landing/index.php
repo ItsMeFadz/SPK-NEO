@@ -343,11 +343,6 @@
                                     required>
                             </div>
                         </div>
-                        <?php if ($this->session->flashdata('error')): ?>
-                            <p style="color:red;">
-                                <?= $this->session->flashdata('error'); ?>
-                            </p>
-                        <?php endif; ?>
 
                         <button type="submit"
                             class="w-full bg-gradient-to-r from-pink-500 to-purple-600 text-white font-bold py-3.5 rounded-xl hover:shadow-lg hover:shadow-pink-500/40 transition transform hover:-translate-y-0.5 focus:outline-none focus:ring-4 focus:ring-pink-300 mt-2">
