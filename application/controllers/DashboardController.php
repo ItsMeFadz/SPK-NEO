@@ -66,35 +66,49 @@ class DashboardController extends MY_Controller
 			->get()
 			->result();
 
-		$data['latest_diagnoses'] = $this->db
-			->select('diagnosa.id, diagnosa.created_at, diagnosa.persen, users.name, users.usia, risiko.name as risiko_name, risiko.level')
-			->from('diagnosa')
-			->join('users', 'users.id = diagnosa.user_id', 'left')
-			->join('risiko', 'risiko.id = diagnosa.risiko_id', 'left')
-			->order_by('diagnosa.created_at', 'DESC')
-			->limit(4)
-			->get()
-			->result();
+		if ($role == 2)
+		{
+			$data['latest_patient'] = $this->db
+				->select('name, usia, alamat, created_at')
+				->from('users')
+				->where('role', 2)
+				->order_by('created_at', 'DESC')
+				->limit(1)
+				->get()
+				->row();
+		}
+		else
+		{
+			$data['latest_diagnoses'] = $this->db
+				->select('diagnosa.id, diagnosa.created_at, diagnosa.persen, users.name, users.usia, risiko.name as risiko_name, risiko.level')
+				->from('diagnosa')
+				->join('users', 'users.id = diagnosa.user_id', 'left')
+				->join('risiko', 'risiko.id = diagnosa.risiko_id', 'left')
+				->order_by('diagnosa.created_at', 'DESC')
+				->limit(4)
+				->get()
+				->result();
 
-		$data['latest_patient'] = $this->db
-			->select('name, usia, alamat, created_at')
-			->from('users')
-			->where('role', 2)
-			->order_by('created_at', 'DESC')
-			->limit(1)
-			->get()
-			->row();
+			$data['latest_patient'] = $this->db
+				->select('name, usia, alamat, created_at')
+				->from('users')
+				->where('role', 2)
+				->order_by('created_at', 'DESC')
+				->limit(1)
+				->get()
+				->row();
 
-		$data['highest_risk_case'] = $this->db
-			->select('diagnosa.id, diagnosa.created_at, diagnosa.persen, users.name, risiko.name as risiko_name, risiko.level')
-			->from('diagnosa')
-			->join('users', 'users.id = diagnosa.user_id', 'left')
-			->join('risiko', 'risiko.id = diagnosa.risiko_id', 'left')
-			->order_by('diagnosa.persen', 'DESC')
-			->order_by('diagnosa.created_at', 'DESC')
-			->limit(1)
-			->get()
-			->row();
+			$data['highest_risk_case'] = $this->db
+				->select('diagnosa.id, diagnosa.created_at, diagnosa.persen, users.name, risiko.name as risiko_name, risiko.level')
+				->from('diagnosa')
+				->join('users', 'users.id = diagnosa.user_id', 'left')
+				->join('risiko', 'risiko.id = diagnosa.risiko_id', 'left')
+				->order_by('diagnosa.persen', 'DESC')
+				->order_by('diagnosa.created_at', 'DESC')
+				->limit(1)
+				->get()
+				->row();
+		}
 
 		// Nama view halaman yang akan dimuat di dalam $content
 		$data['content'] = 'admin/dashboard/index';
