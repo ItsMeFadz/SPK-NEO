@@ -6,7 +6,7 @@
                 <img src="http://localhost/SPK-NEO/assets/admin/img/icons/brands/cancer-HD.png"
                     style="height: 33px; width: 33px;">
             </span>
-            <h3 class="mb-0">Hasil Diagnosis</h3>
+            <h3 class="mb-0">Deteksi Dini</h3>
         </div>
 
         <!-- kanan -->

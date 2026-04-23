@@ -79,6 +79,14 @@
                 </a>
             </li>
 
+            <!-- Extended components -->
+            <li class="menu-item <?= ($menu == 'solusi') ? 'active' : '' ?>">
+                <a href="<?= base_url('solusi') ?>" class="menu-link">
+                    <i class="menu-icon tf-icons ti ti-bulb"></i>
+                    <div data-i18n="Data Solusi">Data Solusi</div>
+                </a>
+            </li>
+
             <!-- Icons -->
             <li class="menu-item <?= ($menu == 'rule') ? 'active' : '' ?>">
                 <a href="<?= base_url('rule') ?>" class="menu-link">

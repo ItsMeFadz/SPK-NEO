@@ -50,6 +50,14 @@ $route['risiko/edit/(:num)'] = 'RisikoController/edit/$1';
 $route['risiko/update/(:num)'] = 'RisikoController/update/$1';
 $route['risiko/delete/(:num)'] = 'RisikoController/delete/$1';
 
+// Solusi
+$route['solusi'] = 'SolusiController';
+$route['solusi/create'] = 'SolusiController/create';
+$route['solusi/store'] = 'SolusiController/store';
+$route['solusi/edit/(:num)'] = 'SolusiController/edit/$1';
+$route['solusi/update/(:num)'] = 'SolusiController/update/$1';
+$route['solusi/delete/(:num)'] = 'SolusiController/delete/$1';
+
 // Rule
 $route['rule'] = 'RuleController';
 $route['rule/create'] = 'RuleController/create';
