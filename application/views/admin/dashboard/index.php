@@ -33,7 +33,7 @@ $formatRisk = function ($level, $fallbackName = '')
 <?php if ($role == '1'): ?>
     <div class="spk-db">
 
-        <div class="spk-hero shadow-lg rounded">
+        <div class="spk-hero rounded">
             <div class="spk-hero-inner">
                 <div>
                     <div class="spk-hero-tag"><i class="ti ti-heart-rate-monitor"></i> Sistem Pakar Deteksi Tumor Payudara
@@ -285,7 +285,7 @@ $formatRisk = function ($level, $fallbackName = '')
 <?php if ($role == '2'): ?>
     <div class="spk-db">
 
-        <div class="spk-hero shadow-lg rounded">
+        <div class="spk-hero rounded">
             <div class="spk-hero-inner">
                 <div>
                     <div class="spk-hero-tag"><i class="ti ti-heart-rate-monitor"></i> Deteksi Dini Tumor Payudara</div>

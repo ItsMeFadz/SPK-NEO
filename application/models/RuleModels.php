@@ -8,11 +8,13 @@ class RuleModels extends CI_Model
         rule.id,
         risiko.kode as kode_risiko,
         risiko.name as nama_risiko,
+        solusi.kode as kode_solusi,
         GROUP_CONCAT(gejala.kode ORDER BY gejala.kode ASC) as kode_gejala
         ');
 
         $this->db->from('rule');
         $this->db->join('risiko', 'risiko.id = rule.id_risiko');
+        $this->db->join('solusi', 'solusi.id = rule.id_solusi');
         $this->db->join('rule_detail', 'rule_detail.id_rule = rule.id');
         $this->db->join('gejala', 'gejala.id = rule_detail.id_gejala');
 

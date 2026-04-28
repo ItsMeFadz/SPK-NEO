@@ -12,6 +12,7 @@
                     <th>#</th>
                     <th>Rule Risiko</th>
                     <th>Rule Gejala</th>
+                    <th class="text-center">Rule Solusi</th>
                     <th class="text-center">Aksi</th>
                 </tr>
             </thead>
@@ -26,6 +27,11 @@
                             <td>
                                 <div class="badge bg-label-dark">
                                     <?= html_escape($row->kode_gejala) ?>
+                                </div>
+                            </td>
+                            <td class="text-center">
+                                <div class="badge bg-label-dark">
+                                    <?= html_escape($row->kode_solusi) ?: '-' ?>
                                 </div>
                             </td>
                             <td class="text-center">

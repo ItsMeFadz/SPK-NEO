@@ -46,9 +46,6 @@
             <div class="list-group">
                 <div class="list-group-item">
                     <span class="d-flex flex-column justify-content-center align-items-center mt-3 mb-3">
-                        <!-- <img src="http://localhost/SPK-NEO/assets/admin/img/icons/brands/alert-success.png" alt=""
-                            style="height: 100px; width: 100px; shadow: 0 4px 6px rgba(0, 0, 0, 0.1);" class="mb-2"> -->
-                        <!-- <h3 class="text-uppercase text-success fw-bold">TIDAK Terindikasi Resiko</h3> -->
                         <img src="<?= base_url('assets/admin/img/icons/brands/' . $icon) ?>"
                             style="height: 100px; width: 100px;" class="mb-2">
                         <h3 class="text-uppercase text-center fw-bold <?= str_replace('btn-', 'text-', $class) ?>">
@@ -134,143 +131,33 @@
     </div>
     <div class="card-body">
         <div class="col-md-12">
-            <div class="row">
-                <div class="mb-3 col-md-6">
-                    <div class="alert alert-primary alert-dismissible d-flex align-items-baseline mb-3" role="alert">
-                        <span class="alert-icon alert-icon-lg text-primary me-2">
-                            <i class="ti ti-circle-check ti-sm"></i>
-                        </span>
-                        <div class="d-flex flex-column ps-1">
-                            <h5 class="alert-heading mb-2">Pemeriksaan Payudara Sendiri (SADARI)</h5>
-                            <p class="mb-0 fw-light">
-                                Melakukan pemeriksaan payudara sendiri setiap bulan untuk mendeteksi perubahan dini.
-                                Dilakukan 7-10 hari setelah menstruasi.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                <div class="mb-3 col-md-6">
-                    <div class="alert alert-primary alert-dismissible d-flex align-items-baseline mb-3" role="alert">
-                        <span class="alert-icon alert-icon-lg text-primary me-2">
-                            <i class="ti ti-circle-check ti-sm"></i>
-                        </span>
-                        <div class="d-flex flex-column ps-1">
-                            <h5 class="alert-heading mb-2">Konseling Nutrisi</h5>
-                            <p class="mb-0 fw-light">
-                                Panduan diet sehat untuk mengurangi risiko dan mendukung pemulihan, termasuk mengurangi
-                                lemak jenuh.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                <div class="mb-3 col-md-6">
-                    <div class="alert alert-primary alert-dismissible d-flex align-items-baseline mb-3" role="alert">
-                        <span class="alert-icon alert-icon-lg text-primary me-2">
-                            <i class="ti ti-circle-check ti-sm"></i>
-                        </span>
-                        <div class="d-flex flex-column ps-1">
-                            <h5 class="alert-heading mb-2">Mammogram Rutin</h5>
-                            <p class="mb-0 fw-light">
-                                Melakukan mammogram setiap 1-2 tahun untuk wanita di atas 40 tahun atau sesuai
-                                rekomendasi dokter.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                <div class="mb-3 col-md-6">
-                    <div class="alert alert-primary alert-dismissible d-flex align-items-baseline mb-3" role="alert">
-                        <span class="alert-icon alert-icon-lg text-primary me-2">
-                            <i class="ti ti-circle-check ti-sm"></i>
-                        </span>
-                        <div class="d-flex flex-column ps-1">
-                            <h5 class="alert-heading mb-2">USG Payudara</h5>
-                            <p class="mb-0 fw-light">
-                                Pemeriksaan ultrasonografi payudara untuk evaluasi lebih lanjut jika ditemukan kelainan.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                <div class="mb-3 col-md-6">
-                    <div class="alert alert-primary alert-dismissible d-flex align-items-baseline mb-3" role="alert">
-                        <span class="alert-icon alert-icon-lg text-primary me-2">
-                            <i class="ti ti-circle-check ti-sm"></i>
-                        </span>
-                        <div class="d-flex flex-column ps-1">
-                            <h5 class="alert-heading mb-2">Konseling Genetik</h5>
-                            <p class="mb-0 fw-light">
-                                Konseling untuk memahami risiko genetik dan pilihan pencegahan jika memiliki mutasi gen
-                                BRCA.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                <div class="mb-3 col-md-6">
-                    <div class="alert alert-primary alert-dismissible d-flex align-items-baseline mb-3" role="alert">
-                        <span class="alert-icon alert-icon-lg text-primary me-2">
-                            <i class="ti ti-circle-check ti-sm"></i>
-                        </span>
-                        <div class="d-flex flex-column ps-1">
-                            <h5 class="alert-heading mb-2">Program Olahraga Teratur</h5>
-                            <p class="mb-0 fw-light">
-                                Aktivitas fisik teratur minimal 150 menit per minggu untuk menjaga berat badan ideal dan
-                                mengurangi risiko.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="mb-3 col-md-6">
-                    <div class="alert alert-primary alert-dismissible d-flex align-items-baseline mb-3" role="alert">
-                        <span class="alert-icon alert-icon-lg text-primary me-2">
-                            <i class="ti ti-circle-check ti-sm"></i>
-                        </span>
-                        <div class="d-flex flex-column ps-1">
-                            <h5 class="alert-heading mb-2">Manajemen Berat Badan</h5>
-                            <p class="mb-0 fw-light">
-                                Program untuk mencapai dan mempertahankan berat badan ideal melalui diet dan olahraga.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                <div class="mb-3 col-md-6">
-                    <div class="alert alert-primary alert-dismissible d-flex align-items-baseline mb-3" role="alert">
-                        <span class="alert-icon alert-icon-lg text-primary me-2">
-                            <i class="ti ti-circle-check ti-sm"></i>
-                        </span>
-                        <div class="d-flex flex-column ps-1">
-                            <h5 class="alert-heading mb-2">Hindari Alkohol</h5>
-                            <p class="mb-0 fw-light">
-                                Membatasi atau menghindari konsumsi alkohol untuk mengurangi risiko kanker payudara.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                <div class="mb-3 col-md-6">
-                    <div class="alert alert-primary alert-dismissible d-flex align-items-baseline mb-3" role="alert">
-                        <span class="alert-icon alert-icon-lg text-primary me-2">
-                            <i class="ti ti-circle-check ti-sm"></i>
-                        </span>
-                        <div class="d-flex flex-column ps-1">
-                            <h5 class="alert-heading mb-2">Berhenti Merokok</h5>
-                            <p class="mb-0 fw-light">
-                                Program berhenti merokok untuk mengurangi risiko berbagai jenis kanker termasuk
-                                payudara.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                <div class="mb-3 col-md-6">
-                    <div class="alert alert-primary alert-dismissible d-flex align-items-baseline mb-3" role="alert">
-                        <span class="alert-icon alert-icon-lg text-primary me-2">
-                            <i class="ti ti-circle-check ti-sm"></i>
-                        </span>
-                        <div class="d-flex flex-column ps-1">
-                            <h5 class="alert-heading mb-2">Edukasi Kanker Payudara</h5>
-                            <p class="mb-0 fw-light">
-                                Program edukasi tentang faktor risiko, tanda-tanda dini, dan langkah pencegahan kanker
-                                payudara.
-                            </p>
-                        </div>
-                    </div>
-                </div>
+            <div class="row g-4">
+                <?php
+                if ($solusi)
+                {
+                    $counter = 1;
+                    while ($counter <= 10)
+                    {
+                        $field = 'solusi_' . $counter;
+                        if (isset($solusi->$field) && !empty($solusi->$field))
+                        {
+                            echo '<div class="col-md-6 d-flex">';
+                            echo '<div class="alert alert-primary alert-dismissible d-flex align-items-baseline mb-0 w-100" role="alert">';
+                            echo '<span class="alert-icon alert-icon-lg text-primary me-2">';
+                            echo '<i class="ti ti-circle-check ti-sm"></i>';
+                            echo '</span>';
+                            echo '<div class="d-flex flex-column ps-1">';
+                            echo '<p class="mb-0 fw-light fw-semibold">';
+                            echo $solusi->$field;
+                            echo '</p>';
+                            echo '</div>';
+                            echo '</div>';
+                            echo '</div>';
+                        }
+                        $counter++;
+                    }
+                }
+                ?>
             </div>
         </div>
     </div>

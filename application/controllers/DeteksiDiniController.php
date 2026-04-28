@@ -181,19 +181,27 @@ class DeteksiDiniController extends MY_Controller
 			return null;
 		}
 
+		$lowRiskRules = array_values(array_filter($rules, function ($rule)
+		{
+			return (int) $rule->level === 1;
+		}));
+
 		$evaluasi = [];
 
 		if (array_sum($jawaban) === 0)
 		{
+			$defaultLowRisk = !empty($lowRiskRules) ? $lowRiskRules[0] : null;
+
 			return [
-				'risiko' => (object) [
-					'risiko_id' => 1, // ID Risiko Rendah
+				'rule_id' => $defaultLowRisk ? (int) $defaultLowRisk->rule_id : null,
+				'risiko' => $defaultLowRisk ? $defaultLowRisk : (object) [
+					'risiko_id' => 1,
 					'level' => 1,
 					'name' => 'Tidak Terindikasi',
 					'deskripsi' => '',
 					'saran' => ''
 				],
-				'persen' => 0 
+				'persen' => 0
 			];
 		}
 
@@ -271,6 +279,36 @@ class DeteksiDiniController extends MY_Controller
 			return $rulesTerpenuhi[0];
 		}
 
+		$evaluasiRisikoRendah = array_values(array_filter($evaluasi, function ($item)
+		{
+			return (int) $item['risiko']->level === 1;
+		}));
+
+		if (!empty($evaluasiRisikoRendah))
+		{
+			usort($evaluasiRisikoRendah, function ($a, $b)
+			{
+				if ((float) $a['persen'] !== (float) $b['persen'])
+				{
+					return (float) $b['persen'] <=> (float) $a['persen'];
+				}
+
+				if ((int) $a['matched_ya'] !== (int) $b['matched_ya'])
+				{
+					return (int) $b['matched_ya'] <=> (int) $a['matched_ya'];
+				}
+
+				if ((int) $a['total_gejala_rule'] !== (int) $b['total_gejala_rule'])
+				{
+					return (int) $a['total_gejala_rule'] <=> (int) $b['total_gejala_rule'];
+				}
+
+				return (int) $a['rule_id'] <=> (int) $b['rule_id'];
+			});
+
+			return $evaluasiRisikoRendah[0];
+		}
+
 		usort($evaluasi, function ($a, $b)
 		{
 			if ((float) $a['persen'] !== (float) $b['persen'])
@@ -315,6 +353,17 @@ class DeteksiDiniController extends MY_Controller
 			->get('users')
 			->row();
 
+		$rule = $this->getMatchedRuleForDiagnosa($diagnosa->id);
+
+		$solusi = null;
+		if ($rule)
+		{
+			$solusi = $this->db
+				->where('id', $rule->id_solusi)
+				->get('solusi')
+				->row();
+		}
+
 		$head_name = 'Hasil deteksi dini';
 		$message = 'Hasil deteksi dini berhasil dihitung.';
 
@@ -350,7 +399,36 @@ class DeteksiDiniController extends MY_Controller
 			'class' => $class,
 			'message' => $message,
 			'head_name' => $head_name,
-			'users' => $users
+			'users' => $users,
+			'solusi' => $solusi,
+			'rule' => $rule
 		];
+	}
+
+	private function getMatchedRuleForDiagnosa($diagnosaId)
+	{
+		$detailRows = $this->db
+			->select('gejala_id')
+			->from('diagnosa_detail')
+			->where('diagnosa_id', $diagnosaId)
+			->get()
+			->result();
+
+		$jawaban = [];
+		foreach ($detailRows as $detail)
+		{
+			$jawaban[(int) $detail->gejala_id] = 1;
+		}
+
+		$hasilForwardChaining = $this->inferRisikoFromRules($jawaban);
+		if (!$hasilForwardChaining || empty($hasilForwardChaining['rule_id']))
+		{
+			return null;
+		}
+
+		return $this->db
+			->where('id', (int) $hasilForwardChaining['rule_id'])
+			->get('rule')
+			->row();
 	}
 }

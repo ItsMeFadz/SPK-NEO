@@ -1,5 +1,16 @@
+<div class="spk-insight-hero rounded-3 p-sm-4 mb-3">
+    <div class="d-flex align-items-center gap-2">
+        <i class="ti ti-stethoscope ti-xxl text-white"></i>
+        <div>
+            <h2 class="text-white fw-bold mb-sm-0">Deteksi Dini Neoplasma Payudara</h2>
+            <span class="text-white fw-light fs-5 d-none d-sm-block">
+                Jawab pertanyaan berikut dengan jujur untuk mengetahui risiko Anda.
+            </span>
+        </div>
+    </div>
+</div>
 <div class="card card-action mb-4 overflow-hidden shadow">
-    <div class="card-header" id="vertical-example">
+    <div class="card-header">
         <span class="alert-icon text-primary me-2">
             <i class="ti ti-list-check"></i>
         </span>

@@ -6,7 +6,7 @@
         <form method="post" action="<?= base_url('rule/store') ?>">
             <div class="card-body">
                 <div class="row mb-3">
-                    <label class="col-sm-2 col-form-label" for="basic-default-name">Risiko</label>
+                    <label class="col-sm-2 col-form-label" for="basic-default-name"><span class="badge bg-label-success">Risiko :</span></label>
                     <div class="col-sm-10">
                         <select class="form-select" name="id_risiko">
                             <option disabled selected hidden>Select</option>
@@ -19,13 +19,26 @@
                     </div>
                 </div>
                 <div class="col-md-12">
+                    <div class="row mb-3">
+                        <label class="col-sm-2 col-form-label" for="basic-default-name"><span class="badge bg-label-primary">Solusi :</span></label>
+                        <div class="col-sm-10">
+                            <select class="form-select" name="id_solusi">
+                                <option disabled selected hidden>Select</option>
+                                <?php foreach ($solusi as $s): ?>
+                                    <option value="<?= $s->id ?>">
+                                        <?= $s->kode ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="table-responsive">
                 <table class="table table-striped border-top">
                     <thead class="table-dark">
                         <tr>
-                            <th class="text-nowrap">Tipe</th>
+                            <th class="text-nowrap">Tipe Gejala</th>
                             <th class="text-nowrap text-center">Aksi</th>
                         </tr>
                     </thead>

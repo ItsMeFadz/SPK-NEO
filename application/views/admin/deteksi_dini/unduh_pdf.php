@@ -1,21 +1,31 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <title>Hasil Diagnosis</title>
     <style>
+        @page {
+            margin: 18mm 14mm;
+        }
+
         body {
             font-family: DejaVu Sans, sans-serif;
             font-size: 12px;
             margin: 0;
+            color: #0f172a;
         }
 
-        .card {
+        .pdf-page {
             background: #ffffff;
             border: 1px solid #dbe2ea;
             border-radius: 14px;
-            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
             overflow: hidden;
+            page-break-after: always;
+        }
+
+        .pdf-page:last-child {
+            page-break-after: auto;
         }
 
         .card-header {
@@ -46,30 +56,18 @@
 
         .card-body {
             padding: 22px;
+            page-break-inside: avoid;
         }
 
-        .notice {
-            background: #eff6ff;
-            border: 1px solid #bfdbfe;
-            border-radius: 12px;
-            padding: 14px 16px;
-            margin-bottom: 18px;
-            line-height: 1.65;
-        }
-
-        .notice-title {
-            font-size: 14px;
-            font-weight: bold;
-            margin-bottom: 8px;
-            color: #1d4ed8;
+        .panel,
+        .result-box,
+        .action-row {
+            page-break-inside: avoid;
         }
 
         .result-box {
-            border: 1px solid #e5e7eb;
-            border-radius: 12px;
-            padding: 22px 18px;
             text-align: center;
-            margin-bottom: 18px;
+            margin-bottom: 35px;
         }
 
         .status-icon {
@@ -78,9 +76,17 @@
             margin-bottom: 10px;
         }
 
-        .heading-success { color: #28c76f; }
-        .heading-warning { color: #d97706; }
-        .heading-danger { color: #dc2626; }
+        .heading-success {
+            color: #28c76f;
+        }
+
+        .heading-warning {
+            color: #d97706;
+        }
+
+        .heading-danger {
+            color: #dc2626;
+        }
 
         .result-title {
             font-size: 20px;
@@ -136,15 +142,36 @@
             text-transform: uppercase;
         }
 
-        .badge-success { background: #28c76f; }
-        .badge-warning { background: #E7E33C; }
-        .badge-danger { background: #dc2626; }
+        .badge-success {
+            background: #28c76f;
+        }
+
+        .badge-warning {
+            background: #E7E33C;
+        }
+
+        .badge-danger {
+            background: #dc2626;
+        }
+
+        .mb-2 {
+            margin-bottom: 0.5rem !important;
+        }
+
+        .mb-4 {
+            margin-bottom: 1.5rem !important;
+        }
 
         .section-title {
             font-size: 15px;
             font-weight: bold;
             color: #0f172a;
-            margin: 20px 0 12px;
+            margin: 0 0 12px;
+            text-align: left;
+        }
+
+        .section-title-center {
+            text-align: center;
         }
 
         .number-chip {
@@ -178,8 +205,45 @@
         .muted {
             color: #64748b;
         }
+
+        .action-grid {
+            width: 100%;
+            border-collapse: separate;
+        }
+
+        .action-column {
+            width: 100%;
+            display: block;
+        }
+
+        .action-list {
+            margin: 0;
+            padding: 0;
+        }
+
+        .action-row {
+            margin-bottom: 10px;
+        }
+
+        .action-item {
+            border: 1px solid #dbeafe;
+            background: #eff6ff;
+            border-radius: 10px;
+            padding: 12px 14px;
+            color: #1e3a8a;
+            line-height: 1.5;
+            page-break-inside: avoid;
+            break-inside: avoid;
+        }
+
+        .page-subtitle {
+            color: #64748b;
+            font-size: 11px;
+            line-height: 1.6;
+        }
     </style>
 </head>
+
 <body>
     <?php
     $headingClass = 'heading-warning';
@@ -195,9 +259,78 @@
         $headingClass = 'heading-danger';
         $badgeClass = 'badge-danger';
     }
+
+    $solusiItems = [];
+    if ($solusi)
+    {
+        for ($counter = 1; $counter <= 10; $counter++)
+        {
+            $field = 'solusi_' . $counter;
+            if (!isset($solusi->$field) || trim((string) $solusi->$field) === '')
+            {
+                continue;
+            }
+
+            $solusiItems[] = $solusi->$field;
+        }
+    }
+
+    $recommendationPages = [];
+    $firstPageRecommendations = [];
+    $remainingRecommendations = [];
+    $currentWeight = 0;
+    $nextPageWeightLimit = 980;
+
+    $messageWeight = max(80, strlen(trim(strip_tags($message))) * 1.2);
+    $addressWeight = max(60, strlen(trim(strip_tags((string) $users->alamat))) * 1.1);
+    $firstPageUsedWeight = 520 + $messageWeight + $addressWeight;
+
+    // Dibuat lebih longgar agar ruang kosong halaman 1 tetap terpakai.
+    $firstPageWeightLimit = max(520, 1650 - $firstPageUsedWeight);
+
+    foreach ($solusiItems as $index => $item)
+    {
+        $recommendation = [
+            'number' => $index + 1,
+            'text' => $item,
+        ];
+        $itemWeight = max(180, strlen(trim(strip_tags($item))) * 2);
+
+        if (($currentWeight + $itemWeight) <= $firstPageWeightLimit || empty($firstPageRecommendations))
+        {
+            $firstPageRecommendations[] = $recommendation;
+            $currentWeight += $itemWeight;
+            continue;
+        }
+
+        $remainingRecommendations[] = $recommendation;
+    }
+
+    $currentPage = [];
+    $currentPageWeight = 0;
+
+    foreach ($remainingRecommendations as $recommendation)
+    {
+        $itemWeight = max(180, strlen(trim(strip_tags($recommendation['text']))) * 2);
+
+        if (!empty($currentPage) && ($currentPageWeight + $itemWeight) > $nextPageWeightLimit)
+        {
+            $recommendationPages[] = $currentPage;
+            $currentPage = [];
+            $currentPageWeight = 0;
+        }
+
+        $currentPage[] = $recommendation;
+        $currentPageWeight += $itemWeight;
+    }
+
+    if (!empty($currentPage))
+    {
+        $recommendationPages[] = $currentPage;
+    }
     ?>
 
-    <div class="card">
+    <div class="pdf-page">
         <div class="card-header">
             <table class="header-table">
                 <tr>
@@ -205,7 +338,7 @@
                         <?php if (!empty($logo_path)): ?>
                             <img src="<?= $logo_path; ?>" class="logo">
                         <?php endif; ?>
-                        <span class="title">HASIL DIAGNOSIS</span>
+                        <span class="title">SI NEO</span>
                     </td>
                     <td style="text-align: right;" class="muted">
                         Dicetak: <?= date('d F Y H:i'); ?>
@@ -215,15 +348,53 @@
         </div>
 
         <div class="card-body">
+            <div class="mb-4">
+                <!-- <div class="section-title">
+                    <span class="number-chip">01.</span>Biodata
+                </div> -->
+
+                <table class="biodata-table">
+                    <tr>
+                        <td style="width: 48%; padding-right: 10px; vertical-align: top;">
+                            <div class="field-label">Nama Lengkap</div>
+                            <div class="field-value">
+                                <?= html_escape($users->name); ?>
+                            </div>
+                        </td>
+                        <td style="width: 48%; padding-left: 10px; vertical-align: top;">
+                            <div class="field-label">Tanggal Lahir</div>
+                            <div class="field-value">
+                                <?= html_escape($users->tgl_lahir); ?>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" style="height: 12px;"></td>
+                    </tr>
+                    <tr>
+                        <td style="width: 48%; padding-right: 10px; vertical-align: top;">
+                            <div class="field-label">Usia (Tahun)</div>
+                            <div class="field-value">
+                                <?= html_escape($users->usia); ?>
+                            </div>
+                        </td>
+                        <td style="width: 48%; padding-left: 10px; vertical-align: top;">
+                            <div class="field-label">Alamat Lengkap</div>
+                            <div class="field-value">
+                                <?= nl2br(html_escape($users->alamat)); ?>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
             <div class="result-box">
                 <?php if (!empty($status_icon_path)): ?>
                     <img src="<?= $status_icon_path; ?>" class="status-icon">
                 <?php endif; ?>
                 <div class="result-title <?= $headingClass; ?>"><?= strtoupper($head_name); ?></div>
-                <div class="result-message"><?= $message; ?></div>
-            </div>
+                <div class="result-message mb-4"><?= $message; ?></div>
 
-            <div class="panel">
                 <table class="info-table">
                     <tr>
                         <td class="metric">
@@ -244,36 +415,69 @@
                         </td>
                     </tr>
                 </table>
+            </div>
 
-                <div class="section-title">
-                    <span class="number-chip">01.</span>Biodata
+            <div class="section-title mb-2">Rekomendasi Tindakan
+            </div>
+            <?php if ($solusiItems): ?>
+                <div class="action-grid">
+                    <div class="action-list action-column">
+                        <?php foreach ($firstPageRecommendations as $item): ?>
+                            <div class="action-row">
+                                <div class="action-item">
+                                    <strong><?= $item['number']; ?>.</strong>
+                                    <?= html_escape($item['text']); ?>
+                                </div>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
                 </div>
+            <?php else: ?>
+                <div class="field-value">
+                    Rekomendasi tindakan belum tersedia untuk hasil deteksi ini.
+                </div>
+            <?php endif; ?>
+        </div>
+    </div>
 
-                <table class="biodata-table">
+    <?php foreach ($recommendationPages as $pageIndex => $pageItems): ?>
+        <div class="pdf-page">
+            <div class="card-header">
+                <table class="header-table">
                     <tr>
-                        <td style="width: 48%; padding-right: 10px; vertical-align: top;">
-                            <div class="field-label">Nama Lengkap</div>
-                            <div class="field-value"><?= html_escape($users->name); ?></div>
+                        <td>
+                            <?php if (!empty($logo_path)): ?>
+                                <img src="<?= $logo_path; ?>" class="logo">
+                            <?php endif; ?>
+                            <span class="title">SI NEO</span>
                         </td>
-                        <td style="width: 48%; padding-left: 10px; vertical-align: top;">
-                            <div class="field-label">Tanggal Lahir</div>
-                            <div class="field-value"><?= html_escape($users->tgl_lahir); ?></div>
-                        </td>
-                    </tr>
-                    <tr><td colspan="2" style="height: 12px;"></td></tr>
-                    <tr>
-                        <td style="width: 48%; padding-right: 10px; vertical-align: top;">
-                            <div class="field-label">Usia (Tahun)</div>
-                            <div class="field-value"><?= html_escape($users->usia); ?></div>
-                        </td>
-                        <td style="width: 48%; padding-left: 10px; vertical-align: top;">
-                            <div class="field-label">Alamat Lengkap</div>
-                            <div class="field-value"><?= nl2br(html_escape($users->alamat)); ?></div>
+                        <td style="text-align: right;" class="muted">
+                            Halaman Rekomendasi <?= $pageIndex + 1; ?>
                         </td>
                     </tr>
                 </table>
             </div>
+
+            <div class="card-body">
+                <!-- <div class="section-title section-title-center mb-4">
+                    Rekomendasi Tindakan
+                </div> -->
+
+                <div class="action-grid">
+                    <div class="action-list action-column">
+                        <?php foreach ($pageItems as $item): ?>
+                            <div class="action-row">
+                                <div class="action-item">
+                                    <strong><?= $item['number']; ?>.</strong>
+                                    <?= html_escape($item['text']); ?>
+                                </div>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
+    <?php endforeach; ?>
 </body>
+
 </html>

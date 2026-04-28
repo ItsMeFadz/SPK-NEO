@@ -23,13 +23,15 @@ class ruleController extends MY_Controller
     public function create()
     {
         $this->load->model('RuleModels');
+        $this->load->model('SolusiModels');
 
         // set menu aktif
         $data['menu'] = 'rule';
 
-        // ambil data risiko & gejala
+        // ambil data risiko, gejala & solusi
         $data['risiko'] = $this->db->order_by('kode', 'asc')->get('risiko')->result();
         $data['gejala'] = $this->db->order_by('kode', 'asc')->get('gejala')->result();
+        $data['solusi'] = $this->SolusiModels->getAll();
 
         // Nama view halaman yang akan dimuat di dalam $content
         $data['content'] = 'admin/rule/create';
@@ -47,6 +49,7 @@ class ruleController extends MY_Controller
         }
 
         $this->load->model('RuleModels');
+        $this->load->model('SolusiModels');
 
         $rule = $this->RuleModels->getById($id);
         if (!$rule)
@@ -59,9 +62,10 @@ class ruleController extends MY_Controller
         $data['menu'] = 'rule';
         $data['rule'] = $rule;
 
-        // 🔹 ambil semua risiko & gejala
+        // 🔹 ambil semua risiko, gejala & solusi
         $data['risiko'] = $this->db->order_by('kode', 'asc')->get('risiko')->result();
         $data['gejala'] = $this->db->order_by('kode', 'asc')->get('gejala')->result();
+        $data['solusi'] = $this->SolusiModels->getAll();
 
         // 🔹 ambil gejala yang sudah dipilih
         $detail = $this->db->get_where('rule_detail', [
@@ -81,8 +85,9 @@ class ruleController extends MY_Controller
 
         $id_risiko = $this->input->post('id_risiko');
         $gejala = $this->input->post('gejala');
+        $id_solusi = $this->input->post('id_solusi');
 
-        if (empty($id_risiko) || empty($gejala))
+        if (empty($id_risiko) || empty($gejala) || empty($id_solusi))
         {
             $this->session->set_flashdata('error', 'Risiko dan gejala wajib dipilih');
             redirect('rule/create');
@@ -91,7 +96,8 @@ class ruleController extends MY_Controller
 
         // 🔴 CEK APAKAH RISIKO SUDAH ADA DI RULE
         $cek = $this->db->get_where('rule', [
-            'id_risiko' => $id_risiko
+            'id_risiko' => $id_risiko,
+            'id_solusi' => $id_solusi
         ])->row();
 
         if ($cek)
@@ -103,7 +109,8 @@ class ruleController extends MY_Controller
 
         // 🔹 insert ke rule
         $this->db->insert('rule', [
-            'id_risiko' => $id_risiko
+            'id_risiko' => $id_risiko,
+            'id_solusi' => $id_solusi
         ]);
 
         $id_rule = $this->db->insert_id();
@@ -131,10 +138,11 @@ class ruleController extends MY_Controller
 
         $id_risiko = $this->input->post('id_risiko');
         $gejala = $this->input->post('gejala');
+        $id_solusi = $this->input->post('id_solusi');
 
-        if (empty($id_risiko) || empty($gejala))
+        if (empty($id_risiko) || empty($gejala) || empty($id_solusi))
         {
-            $this->session->set_flashdata('error', 'Risiko dan gejala wajib dipilih');
+            $this->session->set_flashdata('error', 'Risiko, gejala, dan solusi wajib dipilih');
             redirect('rule/edit/' . $id);
             return;
         }
@@ -142,6 +150,7 @@ class ruleController extends MY_Controller
         // 🔴 cek duplicate risiko (kecuali dirinya sendiri)
         $cek = $this->db
             ->where('id_risiko', $id_risiko)
+            ->where('id_solusi', $id_solusi)
             ->where('id !=', $id)
             ->get('rule')
             ->row();
@@ -157,7 +166,8 @@ class ruleController extends MY_Controller
 
         // 🔹 update rule
         $this->db->where('id', $id)->update('rule', [
-            'id_risiko' => $id_risiko
+            'id_risiko' => $id_risiko,
+            'id_solusi' => $id_solusi
         ]);
 
         // 🔹 hapus detail lama
