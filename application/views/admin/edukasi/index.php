@@ -459,7 +459,7 @@
                                         </div>
                                     </div>
                                     <div class="d-flex justify-content-center items-center">
-                                        <img src="http://localhost/SPK-NEO/assets/landing/images/sadari_1.png" alt="">
+                                        <img src="http://localhost/SI-NEO/assets/landing/images/sadari_1.png" alt="">
                                     </div>
                                 </div>
                             </div>
@@ -485,7 +485,7 @@
                                         </div>
                                     </div>
                                     <div class="d-flex justify-content-center items-center">
-                                        <img src="http://localhost/SPK-NEO/assets/landing/images/sadari_2.png" alt=""
+                                        <img src="http://localhost/SI-NEO/assets/landing/images/sadari_2.png" alt=""
                                             style="height: 220px; width: 225px;" class="mt-2">
                                     </div>
                                 </div>
@@ -512,7 +512,7 @@
                                         </div>
                                     </div>
                                     <div class="d-flex justify-content-center items-center mt-3 mb-4">
-                                        <img src="http://localhost/SPK-NEO/assets/landing/images/sadari_3.png" alt=""
+                                        <img src="http://localhost/SI-NEO/assets/landing/images/sadari_3.png" alt=""
                                             class="mt-2">
                                     </div>
                                 </div>
@@ -539,7 +539,7 @@
                                         </div>
                                     </div>
                                     <div class="d-flex justify-content-center items-center mt-1">
-                                        <img src="http://localhost/SPK-NEO/assets/landing/images/sadari_4.png" alt="">
+                                        <img src="http://localhost/SI-NEO/assets/landing/images/sadari_4.png" alt="">
                                     </div>
                                 </div>
                             </div>
@@ -565,7 +565,7 @@
                                         </div>
                                     </div>
                                     <div class="d-flex justify-content-center items-center mt-2 mb-1">
-                                        <img src="http://localhost/SPK-NEO/assets/landing/images/sadari_5.png" alt="">
+                                        <img src="http://localhost/SI-NEO/assets/landing/images/sadari_5.png" alt="">
                                     </div>
                                 </div>
                             </div>
@@ -591,7 +591,7 @@
                                         </div>
                                     </div>
                                     <div class="d-flex justify-content-center items-center">
-                                        <img src="http://localhost/SPK-NEO/assets/landing/images/sadari_6.png" alt="">
+                                        <img src="http://localhost/SI-NEO/assets/landing/images/sadari_6.png" alt="">
                                     </div>
                                 </div>
                             </div>

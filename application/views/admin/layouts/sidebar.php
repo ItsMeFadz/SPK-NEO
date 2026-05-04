@@ -5,7 +5,7 @@
             <span class="app-brand-logo demo">
                 <img src="<?= $assets_admin ?>img/icons/brands/cancer.png" alt="">
             </span>
-            <span class="app-brand-text demo menu-text fw-bold">SP NEO</span>
+            <span class="app-brand-text demo menu-text fw-bold">SI NEO</span>
         </a>
 
         <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto">

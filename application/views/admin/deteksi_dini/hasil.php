@@ -3,7 +3,7 @@
     <div class="card-header d-flex align-items-center justify-content-between flex-wrap">
         <div class="d-flex align-items-center">
             <span class="text-primary me-2">
-                <img src="http://localhost/SPK-NEO/assets/admin/img/icons/brands/cancer-HD.png"
+                <img src="http://localhost/SI-NEO/assets/admin/img/icons/brands/cancer-HD.png"
                     style="height: 33px; width: 33px;">
             </span>
             <h3 class="mb-0">Deteksi Dini</h3>
@@ -124,7 +124,7 @@
 <div class="card card-action mb-4 overflow-hidden shadow">
     <div class="card-header" id="vertical-example">
         <span class="text-primary me-2">
-            <img src="http://localhost/SPK-NEO/assets/admin/img/icons/brands/lamp.png" alt=""
+            <img src="http://localhost/SI-NEO/assets/admin/img/icons/brands/lamp.png" alt=""
                 style="height: 33px; width: 33px;">
         </span>
         <h4 class="card-action-title mb-0">Rekomendasi Tindakan</h4>

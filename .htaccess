@@ -1,8 +1,8 @@
 <IfModule mod_rewrite.c>
     RewriteEngine On
 
-    # Jika project berada di subfolder (mis. http://localhost/SPK-NEO/), sesuaikan RewriteBase:
-    RewriteBase /SPK-NEO/
+    # Jika project berada di subfolder (mis. http://localhost/SI-NEO/), sesuaikan RewriteBase:
+    RewriteBase /SI-NEO/
 
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d
