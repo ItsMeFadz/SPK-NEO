@@ -199,81 +199,73 @@
 
   const lineChart = document.getElementById('lineChart');
   if (lineChart) {
+    const diagnosisChartData = Array.isArray(window.dashboardDiagnosisChart) ? window.dashboardDiagnosisChart : [];
+    const diagnosisLabels = diagnosisChartData.map(item => item.label);
+    const diagnosisValues = diagnosisChartData.map(item => Number(item.value) || 0);
+    const lineChartContext = lineChart.getContext('2d');
+    const diagnosisAreaGradient = lineChartContext.createLinearGradient(0, 0, 0, 380);
+    diagnosisAreaGradient.addColorStop(0, config.colors.primary + '55');
+    diagnosisAreaGradient.addColorStop(1, config.colors.primary + '00');
+
     const lineChartVar = new Chart(lineChart, {
       type: 'line',
       data: {
-        labels: [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140],
+        labels: diagnosisLabels,
         datasets: [
           {
-            data: [80, 150, 180, 270, 210, 160, 160, 202, 265, 210, 270, 255, 290, 360, 375],
-            label: 'Europe',
-            borderColor: config.colors.danger,
-            tension: 0.5,
-            pointStyle: 'circle',
-            backgroundColor: config.colors.danger,
-            fill: false,
-            pointRadius: 1,
-            pointHoverRadius: 5,
-            pointHoverBorderWidth: 5,
-            pointBorderColor: 'transparent',
-            pointHoverBorderColor: cardColor,
-            pointHoverBackgroundColor: config.colors.danger
-          },
-          {
-            data: [80, 125, 105, 130, 215, 195, 140, 160, 230, 300, 220, 170, 210, 200, 280],
-            label: 'Asia',
+            data: diagnosisValues,
             borderColor: config.colors.primary,
-            tension: 0.5,
+            tension: 0.4,
             pointStyle: 'circle',
-            backgroundColor: config.colors.primary,
-            fill: false,
-            pointRadius: 1,
+            backgroundColor: diagnosisAreaGradient,
+            fill: true,
+            pointRadius: 4,
+            pointBackgroundColor: config.colors.primary,
             pointHoverRadius: 5,
             pointHoverBorderWidth: 5,
             pointBorderColor: 'transparent',
             pointHoverBorderColor: cardColor,
             pointHoverBackgroundColor: config.colors.primary
-          },
-          {
-            data: [80, 99, 82, 90, 115, 115, 74, 75, 130, 155, 125, 90, 140, 130, 180],
-            label: 'Africa',
-            borderColor: yellowColor,
-            tension: 0.5,
-            pointStyle: 'circle',
-            backgroundColor: yellowColor,
-            fill: false,
-            pointRadius: 1,
-            pointHoverRadius: 5,
-            pointHoverBorderWidth: 5,
-            pointBorderColor: 'transparent',
-            pointHoverBorderColor: cardColor,
-            pointHoverBackgroundColor: yellowColor
           }
         ]
       },
       options: {
         responsive: true,
         maintainAspectRatio: false,
+        animation: {
+          duration: 500
+        },
+        layout: {
+          padding: {
+            left: 0,
+            right: 0
+          }
+        },
         scales: {
           x: {
+            offset: false,
             grid: {
               color: borderColor,
               drawBorder: false,
               borderColor: borderColor
             },
             ticks: {
-              color: labelColor
+              color: labelColor,
+              maxRotation: 0,
+              minRotation: 0,
+              autoSkip: true,
+              maxTicksLimit: 8
             }
           },
           y: {
-            scaleLabel: {
-              display: true
-            },
             min: 0,
-            max: 400,
+            max: 100,
             ticks: {
               color: labelColor,
-              stepSize: 100
+              stepSize: 10,
+              callback: function(value) {
+                return value + '%';
+              }
             },
             grid: {
               color: borderColor,
@@ -284,25 +276,20 @@
         },
         plugins: {
           tooltip: {
-            // Updated default tooltip UI
             rtl: isRtl,
             backgroundColor: cardColor,
             titleColor: headingColor,
             bodyColor: legendColor,
             borderWidth: 1,
-            borderColor: borderColor
+            borderColor: borderColor,
+            callbacks: {
+              label: function(context) {
+                return context.parsed.y + '%';
+              }
+            }
           },
           legend: {
-            position: 'top',
-            align: 'start',
-            rtl: isRtl,
-            labels: {
-              usePointStyle: true,
-              padding: 35,
-              boxWidth: 6,
-              boxHeight: 6,
-              color: legendColor
-            }
+            display: false
           }
         }
       }

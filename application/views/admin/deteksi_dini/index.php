@@ -1,4 +1,4 @@
-<div class="spk-insight-hero rounded-3 p-sm-4 mb-3">
+<div class="spk-insight-hero shadow rounded-3 p-sm-4 mb-3">
     <div class="d-flex align-items-center gap-2">
         <i class="ti ti-stethoscope ti-xxl text-white"></i>
         <div>
@@ -9,7 +9,7 @@
         </div>
     </div>
 </div>
-<div class="card card-action mb-4 overflow-hidden shadow">
+<div class="card card-action mb-4 overflow-hidden">
     <div class="card-header">
         <span class="alert-icon text-primary me-2">
             <i class="ti ti-list-check"></i>

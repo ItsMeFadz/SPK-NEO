@@ -18,6 +18,7 @@
 
 <!-- Vendors JS -->
 <script src="<?= $assets_admin ?>vendor/libs/apex-charts/apexcharts.js"></script>
+<script src="<?= $assets_admin ?>vendor/libs/chartjs/chartjs.js"></script>
 <script src="<?= $assets_admin ?>vendor/libs/swiper/swiper.js"></script>
 <script src="<?= $assets_admin ?>vendor/libs/datatables-bs5/datatables-bootstrap5.js"></script>
 
@@ -35,3 +36,6 @@
 <script src="<?= $assets_admin ?>js/toasts-custom.js"></script>
 <script src="<?= $assets_admin ?>js/pagination-custom.js"></script>
 <script src="<?= $assets_admin ?>js/search-data.js"></script>
+<script src="<?= $assets_admin ?>vendor/libs/apex-charts/apexcharts.js"></script>
+<script src="<?= $assets_admin ?>js/charts-apex.js"></script>
+<script src="<?= $assets_admin ?>js/charts-chartjs.js"></script>

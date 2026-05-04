@@ -3,9 +3,25 @@ $role = $this->session->userdata('role');
 $summary = $summary ?? [];
 $risk_distribution = $risk_distribution ?? [];
 $latest_diagnoses = $latest_diagnoses ?? [];
+$diagnosis_chart = $diagnosis_chart ?? [];
 $latest_patient = $latest_patient ?? null;
 $highest_risk_case = $highest_risk_case ?? null;
+$latest_user_diagnosis = $latest_user_diagnosis ?? null;
 $current_user_name = trim((string) ($current_user_name ?? 'Pengguna'));
+
+$diagnosisChartData = [];
+foreach ($diagnosis_chart as $item)
+{
+    if (empty($item->created_at))
+    {
+        continue;
+    }
+
+    $diagnosisChartData[] = [
+        'label' => date('d/m/Y', strtotime($item->created_at)),
+        'value' => (float) $item->persen,
+    ];
+}
 
 $totalCases = 0;
 foreach ($risk_distribution as $item)
@@ -27,6 +43,47 @@ $formatRisk = function ($level, $fallbackName = '')
             return ['label' => $fallbackName ?: 'N/A', 'badge' => 'risk-none', 'icon' => 'ti-stethoscope', 'color' => '#94a3b8', 'bar' => '#94a3b8'];
     }
 };
+
+$patientLatestRisk = null;
+$patientLatestRiskTextClass = 'text-muted';
+$patientLatestRiskBadgeClass = 'bg-label-secondary';
+$patientLatestRiskHint = 'Belum ada hasil deteksi untuk ditampilkan';
+$patientLatestRiskTitle = 'Belum Ada Data';
+$patientLatestScoreLabel = 'Skor deteksi belum tersedia';
+$patientLatestDateLabel = '-';
+$patientLatestDateHint = 'Silakan lakukan deteksi dini terlebih dahulu';
+$patientTotalDiagnosa = (int) ($summary['my_total_diagnosa'] ?? 0);
+
+if ($role == '2' && $latest_user_diagnosis)
+{
+    $patientLatestRisk = $formatRisk($latest_user_diagnosis->level, (string) $latest_user_diagnosis->risiko_name);
+    $patientLatestRiskTitle = $patientLatestRisk['label'];
+    $patientLatestDateLabel = date('d M Y', strtotime($latest_user_diagnosis->created_at));
+    $patientLatestScoreLabel = 'Skor Deteksi: ' . (int) $latest_user_diagnosis->persen . '/100';
+    $patientLatestDateHint = $patientLatestScoreLabel;
+
+    switch ((int) $latest_user_diagnosis->level)
+    {
+        case 1:
+            $patientLatestRiskTextClass = 'text-success';
+            $patientLatestRiskBadgeClass = 'bg-label-success';
+            $patientLatestRiskHint = 'Kondisi Aman';
+            break;
+        case 2:
+            $patientLatestRiskTextClass = 'text-warning';
+            $patientLatestRiskBadgeClass = 'bg-label-warning';
+            $patientLatestRiskHint = 'Perlu Perhatian';
+            break;
+        case 3:
+            $patientLatestRiskTextClass = 'text-danger';
+            $patientLatestRiskBadgeClass = 'bg-label-danger';
+            $patientLatestRiskHint = 'Perlu Konsultasi';
+            break;
+        default:
+            $patientLatestRiskHint = 'Status Terakhir';
+            break;
+    }
+}
 ?>
 
 <!-- ADMIN DASHBOARD  (role = 1) -->
@@ -69,7 +126,7 @@ $formatRisk = function ($level, $fallbackName = '')
             </div>
         </div>
 
-        <div class="spk-stat-grid">
+        <div class="spk-stat-grid spk-stat-grid-fluid">
             <div class="card spk-card shadow-sm">
                 <div class="card-body">
                     <div class="spk-stat-top">
@@ -121,7 +178,8 @@ $formatRisk = function ($level, $fallbackName = '')
                         <h6 class="my-md-0 fw-bold">Distribusi Risiko Diagnosis</h6>
                         <p class="fs-6 my-md-0">Komposisi hasil berdasarkan level risiko tersimpan</p>
                     </div>
-                    <span class="spk-chip"><span class="dot"></span><?= $totalCases ?> <span class="d-none d-md-inline">Total Kasus</span></span>
+                    <span class="spk-chip"><span class="dot"></span><?= $totalCases ?> <span
+                            class="d-none d-md-inline">Total Kasus</span></span>
                 </div>
                 <div class="spk-panel-body">
                     <?php if (!empty($risk_distribution)): ?>
@@ -169,7 +227,8 @@ $formatRisk = function ($level, $fallbackName = '')
                         <h6 class="spk-ih-tag">Kasus Risiko Tertinggi</h6>
                         <div class="spk-ih-name"><?= html_escape($highest_risk_case->name) ?></div>
                         <div class="spk-ih-meta"><?= (int) $highest_risk_case->persen ?>% skor &bull;
-                            <?= date('d M Y H:i', strtotime($highest_risk_case->created_at)) ?></div>
+                            <?= date('d M Y H:i', strtotime($highest_risk_case->created_at)) ?>
+                        </div>
                         <div class="spk-ih-bdg"><span class="spk-badge <?= $tRM['badge'] ?>"><?= $tRM['label'] ?></span></div>
                     </div>
                 <?php else: ?>
@@ -235,8 +294,9 @@ $formatRisk = function ($level, $fallbackName = '')
                     <h6 class="my-md-0 fw-bold">Aktivitas Diagnosis Terbaru</h6>
                     <p class="fs-6 my-md-0">Lima hasil deteksi terbaru yang tersimpan di sistem</p>
                 </div>
-                <a href="<?= base_url('dataPasien') ?>" class="spk-btn-outline"><i class="ti ti-table"></i> <span class="d-none d-md-inline">Tabel
-                    Lengkap</span></a>
+                <a href="<?= base_url('dataPasien') ?>" class="spk-btn-outline"><i class="ti ti-table"></i> <span
+                        class="d-none d-md-inline">Tabel
+                        Lengkap</span></a>
             </div>
             <div class="card-body">
                 <?php if (!empty($latest_diagnoses)): ?>
@@ -249,7 +309,8 @@ $formatRisk = function ($level, $fallbackName = '')
                                     <div>
                                         <h5 class="my-md-0 fw-bold"><?= html_escape($row->name ?: 'Pasien') ?></h5>
                                         <p class="my-md-1 fs-tiny fw-normal">
-                                            <?= !empty($row->usia) ? (int) $row->usia . ' tahun' : 'Usia tidak tersedia' ?></p>
+                                            <?= !empty($row->usia) ? (int) $row->usia . ' tahun' : 'Usia tidak tersedia' ?>
+                                        </p>
                                     </div>
                                     <span class="spk-badge <?= $rm['badge'] ?>"><?= $rm['label'] ?></span>
                                 </div>
@@ -322,44 +383,27 @@ $formatRisk = function ($level, $fallbackName = '')
         </div>
 
         <div class="spk-stat-grid">
-            <div class="card spk-card shadow-sm">
+            <div class="card spk-card shadow-sm spk-patient-stat">
                 <div class="card-body">
-                    <div class="spk-stat-top">
-                        <div class="spk-stat-icon si-pink"><i class="ti ti-clipboard-list"></i></div>
+                    <div class="spk-stat-label">Risiko Saat Ini</div>
+                    <h2 class="fw-bold mb-1 spk-patient-stat-title"><?= html_escape($patientLatestRiskTitle) ?></h2>
+                    <div class="spk-patient-stat-note">
+                        <span class="badge <?= html_escape($patientLatestRiskBadgeClass) ?>"><?= html_escape($patientLatestRiskHint) ?></span>
                     </div>
-                    <h2 class="fw-bold mb-1"><?= (int) ($summary['my_total_diagnosa'] ?? 0) ?></h2>
-                    <div class="spk-stat-label">Total Diagnosis</div>
-                    <div class="spk-stat-hint">Seluruh riwayat pemeriksaan kamu</div>
                 </div>
             </div>
-            <div class="card spk-card shadow-sm">
+            <div class="card spk-card shadow-sm spk-patient-stat">
                 <div class="card-body">
-                    <div class="spk-stat-top">
-                        <div class="spk-stat-icon si-teal"><i class="ti ti-shield-check"></i></div>
-                    </div>
-                    <h2 class="fw-bold mb-1"><?= (int) ($summary['my_low_risk'] ?? 0) ?></h2>
-                    <div class="spk-stat-label">Risiko Rendah</div>
-                    <div class="spk-stat-hint">Hasil deteksi level aman</div>
+                    <div class="spk-stat-label">Terakhir Periksa</div>
+                    <h2 class="fw-bold mb-1 spk-patient-stat-date"><?= html_escape($patientLatestDateLabel) ?></h2>
+                    <div class="spk-patient-stat-chip"><?= html_escape($patientLatestDateHint) ?></div>
                 </div>
             </div>
-            <div class="card spk-card shadow-sm">
+            <div class="card spk-card shadow-sm spk-patient-stat">
                 <div class="card-body">
-                    <div class="spk-stat-top">
-                        <div class="spk-stat-icon si-amber"><i class="ti ti-alert-triangle"></i></div>
-                    </div>
-                    <h2 class="fw-bold mb-1"><?= (int) ($summary['my_mid_risk'] ?? 0) ?></h2>
-                    <div class="spk-stat-label">Risiko Sedang</div>
-                    <div class="spk-stat-hint">Perlu pemantauan lebih lanjut</div>
-                </div>
-            </div>
-            <div class="card spk-card shadow-sm">
-                <div class="card-body">
-                    <div class="spk-stat-top">
-                        <div class="spk-stat-icon si-violet"><i class="ti ti-activity-heartbeat"></i></div>
-                    </div>
-                    <h2 class="fw-bold mb-1"><?= (int) ($summary['my_high_risk'] ?? 0) ?></h2>
-                    <div class="spk-stat-label">Risiko Tinggi</div>
-                    <div class="spk-stat-hint">Segera konsultasi ke dokter</div>
+                    <div class="spk-stat-label">Total Deteksi</div>
+                    <h2 class="fw-bold mb-1 spk-patient-stat-total"><?= $patientTotalDiagnosa ?>x</h2>
+                    <div class="spk-stat-hint">Riwayat pemeriksaan Anda</div>
                 </div>
             </div>
         </div>
@@ -368,60 +412,20 @@ $formatRisk = function ($level, $fallbackName = '')
 
             <!-- Riwayat Diagnosis Terbaru -->
             <div class="card">
-                <div class="spk-panel-head">
-                    <div class="gap-2">
-                        <h6 class="my-md-0 fw-bold">Riwayat Diagnosis Terbaru</h6>
-                        <p class="fs-6 my-md-0">Lima hasil deteksi terakhir yang tersimpan</p>
+                <div class="card-header d-flex justify-content-between">
+                    <div>
+                        <h5 class="card-title mb-0">Grafik Skor & Resiko</h5>
+                        <small class="text-muted">Grafik skor risiko dari waktu ke waktu</small>
                     </div>
-                    <a href="<?= base_url('riwayatDiagnosis') ?>" class="spk-btn-outline"><i class="ti ti-table"></i> 
-                    <span class="d-none d-md-inline">Lihat Semua</span></a>
+                    <div class="d-sm-flex d-none align-items-center">
+                        <span class="badge bg-label-primary">
+                            <i class="ti ti-point ti-xs text-danger"></i>
+                            <span class="align-middle">Live Data</span>
+                        </span>
+                    </div>
                 </div>
                 <div class="card-body">
-                    <?php if (!empty($latest_diagnoses)): ?>
-                        <div class="spk-diag-grid">
-                            <?php foreach ($latest_diagnoses as $row):
-                                $rm = $formatRisk($row->level, (string) $row->risiko_name);
-                                ?>
-                                <div class="spk-dcard">
-                                    <div class="spk-dcard-top">
-                                        <div>
-                                            <h5 class="my-md-0 fw-bold"><?= html_escape($row->risiko_name ?: 'Hasil Deteksi') ?>
-                                            </h5>
-                                            <p class="my-md-1 fs-tiny fw-normal">
-                                                <?= date('d M Y, H:i', strtotime($row->created_at)) ?></p>
-                                        </div>
-                                        <span class="spk-badge <?= $rm['badge'] ?>"><?= $rm['label'] ?></span>
-                                    </div>
-                                    <div>
-                                        <div class="d-flex justify-content-between mb-1">
-                                            <span class="fs-tiny text-muted">Skor Risiko</span>
-                                            <span class="fs-tiny fw-bold"
-                                                style="color:<?= $rm['color'] ?>"><?= (int) $row->persen ?>%</span>
-                                        </div>
-                                        <div class="spk-bar-wrap">
-                                            <div class="spk-bar"
-                                                style="width:<?= (int) $row->persen ?>%;background:<?= $rm['color'] ?>"></div>
-                                        </div>
-                                    </div>
-                                    <div class="spk-dcard-foot">
-                                        <span class="my-md-1 fs-tiny fw-normal text-muted">
-                                            <i class="ti ti-calendar-event ti-xs text-primary"></i>
-                                            <?= date('d M Y', strtotime($row->created_at)) ?>
-                                        </span>
-                                        <a href="<?= base_url('deteksiDini/unduh/' . $row->id) ?>" class="spk-btn-dl"><i
-                                                class="ti ti-download"></i> Unduh</a>
-                                    </div>
-                                </div>
-                            <?php endforeach; ?>
-                        </div>
-                    <?php else: ?>
-                        <div class="spk-empty">
-                            <i class="ti ti-report-analytics"></i>
-                            <p>Kamu belum pernah melakukan deteksi dini.<br>Mulai sekarang untuk memantau kesehatanmu!</p>
-                            <a href="<?= base_url('deteksiDini') ?>" class="spk-btn-pink mt-3 d-inline-flex"><i
-                                    class="ti ti-stethoscope"></i> Mulai Deteksi Pertama</a>
-                        </div>
-                    <?php endif; ?>
+                    <canvas id="lineChart" style="width:100%;height:320px;"></canvas>
                 </div>
             </div>
 
@@ -434,7 +438,8 @@ $formatRisk = function ($level, $fallbackName = '')
                         <div class="spk-ih-tag">Diagnosis Paling Berisiko</div>
                         <div class="spk-ih-name"><?= html_escape($highest_risk_case->risiko_name ?: 'Hasil Deteksi') ?></div>
                         <div class="spk-ih-meta"><?= (int) $highest_risk_case->persen ?>% skor &bull;
-                            <?= date('d M Y H:i', strtotime($highest_risk_case->created_at)) ?></div>
+                            <?= date('d M Y H:i', strtotime($highest_risk_case->created_at)) ?>
+                        </div>
                         <div class="spk-ih-bdg"><span class="spk-badge <?= $tRM['badge'] ?>"><?= $tRM['label'] ?></span></div>
                     </div>
                 <?php else: ?>
@@ -462,7 +467,8 @@ $formatRisk = function ($level, $fallbackName = '')
                                 style="color:<?= $saran['color'] ?>;font-size:1.1rem;"></i>
                             <div>
                                 <div class="fw-bold mb-1" style="font-size:.82rem;color:<?= $saran['color'] ?>">
-                                    <?= $saran['title'] ?></div>
+                                    <?= $saran['title'] ?>
+                                </div>
                                 <div class="text-muted" style="font-size:.75rem;line-height:1.5"><?= $saran['text'] ?></div>
                             </div>
                         </div>
@@ -509,4 +515,10 @@ $formatRisk = function ($level, $fallbackName = '')
         </div>
 
     </div>
+<?php endif; ?>
+
+<?php if ($role == '2'): ?>
+    <script>
+        window.dashboardDiagnosisChart = <?= json_encode($diagnosisChartData, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) ?>;
+    </script>
 <?php endif; ?>

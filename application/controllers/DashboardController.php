@@ -17,6 +17,8 @@ class DashboardController extends MY_Controller
 		$user_id = $this->session->userdata('id');
 
 		$data['current_user_name'] = (string) $this->session->userdata('name');
+		$data['diagnosis_chart'] = [];
+		$data['latest_user_diagnosis'] = null;
 		$data['summary'] = [
 			'total_pasien' => (int) $this->db->where('role', 2)->count_all_results('users'),
 			'total_diagnosa' => (int) $this->db->count_all('diagnosa'),
@@ -54,7 +56,15 @@ class DashboardController extends MY_Controller
 
 			// Override data diagnosis & highest risk case khusus milik pasien ini
 			$data['latest_diagnoses'] = $this->db->select('diagnosa.id, diagnosa.created_at, diagnosa.persen, risiko.name as risiko_name, risiko.level')->from('diagnosa')->join('risiko', 'risiko.id = diagnosa.risiko_id', 'left')->where('diagnosa.user_id', $user_id)->order_by('diagnosa.created_at', 'DESC')->limit(4)->get()->result();
+			$data['latest_user_diagnosis'] = $this->db->select('diagnosa.id, diagnosa.created_at, diagnosa.persen, risiko.name as risiko_name, risiko.level')->from('diagnosa')->join('risiko', 'risiko.id = diagnosa.risiko_id', 'left')->where('diagnosa.user_id', $user_id)->order_by('diagnosa.created_at', 'DESC')->limit(1)->get()->row();
 			$data['highest_risk_case'] = $this->db->select('diagnosa.id, diagnosa.created_at, diagnosa.persen, risiko.name as risiko_name, risiko.level')->from('diagnosa')->join('risiko', 'risiko.id = diagnosa.risiko_id', 'left')->where('diagnosa.user_id', $user_id)->order_by('diagnosa.persen', 'DESC')->order_by('diagnosa.created_at', 'DESC')->limit(1)->get()->row();
+			$data['diagnosis_chart'] = $this->db
+				->select('created_at, persen')
+				->from('diagnosa')
+				->where('user_id', $user_id)
+				->order_by('created_at', 'ASC')
+				->get()
+				->result();
 		}
 
 		$data['risk_distribution'] = $this->db
