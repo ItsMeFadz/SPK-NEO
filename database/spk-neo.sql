@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 23 Apr 2026 pada 15.45
+-- Waktu pembuatan: 04 Bulan Mei 2026 pada 12.06
 -- Versi server: 10.4.32-MariaDB
 -- Versi PHP: 8.5.3
 
@@ -120,7 +120,18 @@ INSERT INTO `diagnosa` (`id`, `user_id`, `risiko_id`, `persen`, `created_at`) VA
 (79, 10, 4, 100, '2026-04-21 08:17:36'),
 (80, 1, 4, 100, '2026-04-21 08:30:24'),
 (81, 1, 1, 0, '2026-04-21 08:30:47'),
-(82, 1, 1, 0, '2026-04-21 08:33:36');
+(82, 1, 1, 0, '2026-04-21 08:33:36'),
+(83, 1, 1, 0, '2026-04-24 01:54:01'),
+(84, 1, 4, 50, '2026-04-24 03:00:23'),
+(85, 1, 1, 0, '2026-04-24 03:46:00'),
+(86, 1, 1, 100, '2026-04-27 05:01:10'),
+(87, 1, 3, 100, '2026-04-27 05:01:36'),
+(88, 6, 1, 0, '2026-04-28 08:30:39'),
+(89, 6, 1, 0, '2026-04-28 08:35:32'),
+(90, 6, 1, 0, '2026-04-28 08:50:02'),
+(91, 10, 1, 50, '2026-05-01 12:08:09'),
+(92, 10, 1, 50, '2026-05-01 13:17:41'),
+(93, 10, 4, 100, '2026-05-03 08:50:21');
 
 -- --------------------------------------------------------
 
@@ -386,7 +397,36 @@ INSERT INTO `diagnosa_detail` (`id`, `diagnosa_id`, `gejala_id`) VALUES
 (245, 80, 4),
 (246, 80, 5),
 (247, 80, 7),
-(248, 80, 8);
+(248, 80, 8),
+(249, 84, 6),
+(250, 84, 8),
+(251, 86, 34),
+(252, 86, 3),
+(253, 86, 5),
+(254, 86, 6),
+(255, 86, 7),
+(256, 87, 1),
+(257, 87, 5),
+(258, 87, 6),
+(259, 87, 7),
+(260, 87, 8),
+(261, 90, 6),
+(262, 90, 8),
+(263, 91, 34),
+(264, 91, 5),
+(265, 91, 7),
+(266, 92, 3),
+(267, 92, 5),
+(268, 92, 6),
+(269, 92, 7),
+(270, 93, 1),
+(271, 93, 34),
+(272, 93, 3),
+(273, 93, 4),
+(274, 93, 5),
+(275, 93, 6),
+(276, 93, 7),
+(277, 93, 8);
 
 -- --------------------------------------------------------
 
@@ -447,17 +487,18 @@ INSERT INTO `risiko` (`id`, `kode`, `name`, `deskripsi`, `saran`, `level`) VALUE
 
 CREATE TABLE `rule` (
   `id` int(11) NOT NULL,
-  `id_risiko` int(11) DEFAULT NULL
+  `id_risiko` int(11) DEFAULT NULL,
+  `id_solusi` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data untuk tabel `rule`
 --
 
-INSERT INTO `rule` (`id`, `id_risiko`) VALUES
-(2, 1),
-(3, 3),
-(8, 4);
+INSERT INTO `rule` (`id`, `id_risiko`, `id_solusi`) VALUES
+(2, 1, 1),
+(3, 3, 2),
+(9, 4, 3);
 
 -- --------------------------------------------------------
 
@@ -476,14 +517,43 @@ CREATE TABLE `rule_detail` (
 --
 
 INSERT INTO `rule_detail` (`id`, `id_rule`, `id_gejala`) VALUES
-(3, 2, 34),
-(4, 2, 3),
-(5, 3, 1),
-(6, 3, 5),
-(7, 3, 6),
-(8, 3, 7),
-(22, 8, 4),
-(23, 8, 8);
+(26, 2, 34),
+(27, 2, 3),
+(28, 3, 1),
+(29, 3, 5),
+(30, 3, 6),
+(31, 3, 7),
+(34, 9, 4),
+(35, 9, 8);
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `solusi`
+--
+
+CREATE TABLE `solusi` (
+  `id` int(11) NOT NULL,
+  `kode` varchar(50) NOT NULL,
+  `keterangan` text DEFAULT NULL,
+  `solusi_1` text DEFAULT NULL,
+  `solusi_2` text DEFAULT NULL,
+  `solusi_3` text DEFAULT NULL,
+  `solusi_4` text DEFAULT NULL,
+  `solusi_5` text DEFAULT NULL,
+  `solusi_6` text DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data untuk tabel `solusi`
+--
+
+INSERT INTO `solusi` (`id`, `kode`, `keterangan`, `solusi_1`, `solusi_2`, `solusi_3`, `solusi_4`, `solusi_5`, `solusi_6`, `created_at`, `updated_at`) VALUES
+(1, 'S01', 'Anda tidak memiliki risiko terkena Tumor Payudara saat ini. Namun tetap jaga pola hidup sehat ', 'Melakukan SADARI (Periksa Payudara Sendiri) secara rutin setiap bulan', 'Menjaga pola hidup sehat', 'Melakukan program olahraga teratur', 'Menghindari faktor risiko seperti merokok dan alkohol', 'Edukasi pencegahan dan pengobatan.', '', NULL, NULL),
+(2, 'S02', 'Anda memiliki risiko sedang atau mulai terindikasi tumor payudara. Disarankan untuk lebih waspada untuk mencegah keadaan memburuk', 'Segera melakukan pemeriksaan penunjang seperti USG payudara, dan Mammografi', 'Segera melakukan pemeriksaan di fasilitas pelayanan kesehatan', 'Tetap menerapkan pola hidup sehat', 'Melakukan program olahraga teratur', 'Menghindari faktor risiko seperti merokok dan alcohol', 'Edukasi pencegahan dan pengobatan', NULL, NULL),
+(3, 'S03', 'Anda terindikasi memiliki risiko tinggi tumor payudara. Segera lakukan konsultasi dengan tenaga medis untuk pemeriksaan lebih lanjut dan penanganan yang tepat', 'Segera konsultasi ke dokter ahli untuk penanganan yang tepat', 'Melakukan pemeriksaan diagnostik lanjutan seperti Mammografi, USG payudara, Biopsi', 'Tetap menerapkan pola hidup sehat', 'Melakukan program olahraga teratur', 'Menghindari faktor risiko seperti merokok dan alkohol', 'Edukasi pencegahan dan pengobatan', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -564,6 +634,13 @@ ALTER TABLE `rule_detail`
   ADD KEY `id_gejala` (`id_gejala`);
 
 --
+-- Indeks untuk tabel `solusi`
+--
+ALTER TABLE `solusi`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `kode` (`kode`);
+
+--
 -- Indeks untuk tabel `users`
 --
 ALTER TABLE `users`
@@ -577,13 +654,13 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT untuk tabel `diagnosa`
 --
 ALTER TABLE `diagnosa`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=83;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=94;
 
 --
 -- AUTO_INCREMENT untuk tabel `diagnosa_detail`
 --
 ALTER TABLE `diagnosa_detail`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=249;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=278;
 
 --
 -- AUTO_INCREMENT untuk tabel `gejala`
@@ -601,13 +678,19 @@ ALTER TABLE `risiko`
 -- AUTO_INCREMENT untuk tabel `rule`
 --
 ALTER TABLE `rule`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT untuk tabel `rule_detail`
 --
 ALTER TABLE `rule_detail`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
+
+--
+-- AUTO_INCREMENT untuk tabel `solusi`
+--
+ALTER TABLE `solusi`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT untuk tabel `users`
