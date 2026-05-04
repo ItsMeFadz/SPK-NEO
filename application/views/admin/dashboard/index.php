@@ -96,7 +96,7 @@ if ($role == '2' && $latest_user_diagnosis)
                     <div class="spk-hero-tag"><i class="ti ti-heart-rate-monitor"></i> Sistem Pakar Deteksi Tumor Payudara
                     </div>
                     <h1>Monitoring <em>Sistem Pakar</em><br>Tumor Payudara secara real-time.</h1>
-                    <p>Halo <?= html_escape($current_user_name) ?>, semua data pasien, diagnosis, dan distribusi risiko
+                    <p>Halo <?= html_escape($current_user_name) ?>, semua data pasien, deteksi dini, dan distribusi risiko
                         tersaji dalam satu tampilan terpusat.</p>
                     <div class="spk-hero-btns">
                         <a href="<?= base_url('deteksiDini') ?>" class="spk-btn-pink"><i class="ti ti-stethoscope"></i>
@@ -108,7 +108,7 @@ if ($role == '2' && $latest_user_diagnosis)
                 <div class="spk-hero-box">
                     <div class="spk-hero-box-title">Highlight Hari Ini</div>
                     <div class="spk-hstat">
-                        <div class="spk-hstat-label">Diagnosis hari ini</div>
+                        <div class="spk-hstat-label">Deteksi Dini hari ini</div>
                         <div class="spk-hstat-val"><?= (int) ($summary['today_diagnosa'] ?? 0) ?></div>
                         <div class="spk-hstat-sub">kasus baru terdeteksi</div>
                     </div>
@@ -120,7 +120,7 @@ if ($role == '2' && $latest_user_diagnosis)
                     <div class="spk-hstat">
                         <div class="spk-hstat-label">Rata-rata skor risiko</div>
                         <div class="spk-hstat-val"><?= number_format((float) ($summary['average_persen'] ?? 0), 1) ?>%</div>
-                        <div class="spk-hstat-sub">dari seluruh diagnosis</div>
+                        <div class="spk-hstat-sub">dari seluruh deteksi dini</div>
                     </div>
                 </div>
             </div>
@@ -143,8 +143,8 @@ if ($role == '2' && $latest_user_diagnosis)
                         <div class="spk-stat-icon si-teal"><i class="ti ti-report-analytics"></i></div>
                     </div>
                     <h2 class="fw-bold mb-1"><?= (int) ($summary['total_diagnosa'] ?? 0) ?></h2>
-                    <div class="spk-stat-label">Total Diagnosis</div>
-                    <div class="spk-stat-hint">Riwayat diagnosis tersimpan</div>
+                    <div class="spk-stat-label">Total Deteksi Dini</div>
+                    <div class="spk-stat-hint">Riwayat deteksi dini tersimpan</div>
                 </div>
             </div>
             <div class="card spk-card shadow-sm">
@@ -175,7 +175,7 @@ if ($role == '2' && $latest_user_diagnosis)
             <div class="card">
                 <div class="spk-panel-head">
                     <div class="gap-2">
-                        <h6 class="my-md-0 fw-bold">Distribusi Risiko Diagnosis</h6>
+                        <h6 class="my-md-0 fw-bold">Distribusi Risiko Deteksi Dini</h6>
                         <p class="fs-6 my-md-0">Komposisi hasil berdasarkan level risiko tersimpan</p>
                     </div>
                     <span class="spk-chip"><span class="dot"></span><?= $totalCases ?> <span
@@ -212,7 +212,7 @@ if ($role == '2' && $latest_user_diagnosis)
                         </div>
                     <?php else: ?>
                         <div class="spk-empty"><i class="ti ti-chart-donut-3"></i>
-                            <p>Belum ada data diagnosis untuk divisualisasikan.</p>
+                            <p>Belum ada data deteksi dini untuk divisualisasikan.</p>
                         </div>
                     <?php endif; ?>
                 </div>
@@ -234,7 +234,7 @@ if ($role == '2' && $latest_user_diagnosis)
                 <?php else: ?>
                     <div class="spk-insight-hero rounded-top">
                         <div class="spk-ih-tag">Kasus Risiko Tertinggi</div>
-                        <div class="spk-ih-name" style="color:rgba(255,255,255,.35)">Belum ada data diagnosis.</div>
+                        <div class="spk-ih-name" style="color:rgba(255,255,255,.35)">Belum ada data deteksi dini.</div>
                     </div>
                 <?php endif; ?>
 
@@ -264,7 +264,7 @@ if ($role == '2' && $latest_user_diagnosis)
                             <div class="spk-link-card border rounded">
                                 <div class="d-flex justify-content-between align-items-center px-3 py-3 px-md-3 py-md-3">
                                     <div>
-                                        <h6 class="my-md-0 fw-bold">Riwayat Diagnosis</h6>
+                                        <h6 class="my-md-0 fw-bold">Riwayat Deteksi Dini</h6>
                                         <div class="small text-muted">Review hasil deteksi tersimpan</div>
                                     </div>
                                     <i class="ti ti-arrow-right"></i>
@@ -291,8 +291,8 @@ if ($role == '2' && $latest_user_diagnosis)
         <div class="card">
             <div class="spk-panel-head">
                 <div class="gap-2">
-                    <h6 class="my-md-0 fw-bold">Aktivitas Diagnosis Terbaru</h6>
-                    <p class="fs-6 my-md-0">Lima hasil deteksi terbaru yang tersimpan di sistem</p>
+                    <h6 class="my-md-0 fw-bold">Aktivitas Deteksi Dini Terbaru</h6>
+                    <p class="fs-6 my-md-0">Lima hasil deteksi dini terbaru yang tersimpan di sistem</p>
                 </div>
                 <a href="<?= base_url('dataPasien') ?>" class="spk-btn-outline"><i class="ti ti-table"></i> <span
                         class="d-none d-md-inline">Tabel
@@ -332,7 +332,7 @@ if ($role == '2' && $latest_user_diagnosis)
                     </div>
                 <?php else: ?>
                     <div class="spk-empty"><i class="ti ti-report-analytics"></i>
-                        <p>Belum ada aktivitas diagnosis yang bisa ditampilkan.</p>
+                        <p>Belum ada aktivitas deteksi dini yang bisa ditampilkan.</p>
                     </div>
                 <?php endif; ?>
             </div>
@@ -351,7 +351,7 @@ if ($role == '2' && $latest_user_diagnosis)
                 <div>
                     <div class="spk-hero-tag"><i class="ti ti-heart-rate-monitor"></i> Deteksi Dini Tumor Payudara</div>
                     <h1>Selamat datang, <em><?= html_escape($current_user_name) ?></em></h1>
-                    <p>Pantau riwayat deteksi dini kamu, lihat hasil diagnosis, dan akses materi edukasi untuk menjaga
+                    <p>Pantau riwayat deteksi dini kamu, lihat hasil deteksi dini, dan akses materi edukasi untuk menjaga
                         kesehatan payudara kamu.</p>
                     <div class="spk-hero-btns">
                         <a href="<?= base_url('deteksiDini') ?>" class="spk-btn-pink"><i class="ti ti-stethoscope"></i>
@@ -363,12 +363,12 @@ if ($role == '2' && $latest_user_diagnosis)
                 <div class="spk-hero-box">
                     <div class="spk-hero-box-title">Statistik Kamu</div>
                     <div class="spk-hstat">
-                        <div class="spk-hstat-label">Total diagnosis saya</div>
+                        <div class="spk-hstat-label">Total Deteksi Dini saya</div>
                         <div class="spk-hstat-val"><?= (int) ($summary['my_total_diagnosa'] ?? 0) ?></div>
                         <div class="spk-hstat-sub">pemeriksaan tersimpan</div>
                     </div>
                     <div class="spk-hstat">
-                        <div class="spk-hstat-label">Diagnosis bulan ini</div>
+                        <div class="spk-hstat-label">Deteksi Dini bulan ini</div>
                         <div class="spk-hstat-val"><?= (int) ($summary['my_monthly_diagnosa'] ?? 0) ?></div>
                         <div class="spk-hstat-sub">kasus bulan berjalan</div>
                     </div>
@@ -376,7 +376,7 @@ if ($role == '2' && $latest_user_diagnosis)
                         <div class="spk-hstat-label">Rata-rata skor risiko</div>
                         <div class="spk-hstat-val"><?= number_format((float) ($summary['my_average_persen'] ?? 0), 1) ?>%
                         </div>
-                        <div class="spk-hstat-sub">dari seluruh diagnosis kamu</div>
+                        <div class="spk-hstat-sub">dari seluruh deteksi dini kamu</div>
                     </div>
                 </div>
             </div>
@@ -410,7 +410,7 @@ if ($role == '2' && $latest_user_diagnosis)
 
         <div class="spk-two">
 
-            <!-- Riwayat Diagnosis Terbaru -->
+            <!-- Riwayat Deteksi Dini Terbaru -->
             <div class="card">
                 <div class="card-header d-flex justify-content-between">
                     <div>
@@ -435,7 +435,7 @@ if ($role == '2' && $latest_user_diagnosis)
                     $tRM = $formatRisk($highest_risk_case->level, (string) $highest_risk_case->risiko_name);
                     ?>
                     <div class="spk-insight-hero rounded-top">
-                        <div class="spk-ih-tag">Diagnosis Paling Berisiko</div>
+                        <div class="spk-ih-tag">Deteksi Dini Paling Berisiko</div>
                         <div class="spk-ih-name"><?= html_escape($highest_risk_case->risiko_name ?: 'Hasil Deteksi') ?></div>
                         <div class="spk-ih-meta"><?= (int) $highest_risk_case->persen ?>% skor &bull;
                             <?= date('d M Y H:i', strtotime($highest_risk_case->created_at)) ?>
@@ -444,8 +444,8 @@ if ($role == '2' && $latest_user_diagnosis)
                     </div>
                 <?php else: ?>
                     <div class="spk-insight-hero rounded-top">
-                        <div class="spk-ih-tag">Diagnosis Paling Berisiko</div>
-                        <div class="spk-ih-name" style="color:rgba(255,255,255,.35)">Belum ada data diagnosis.</div>
+                        <div class="spk-ih-tag">Deteksi Dini Paling Berisiko</div>
+                        <div class="spk-ih-name" style="color:rgba(255,255,255,.35)">Belum ada data deteksi dini.</div>
                     </div>
                 <?php endif; ?>
 
@@ -490,7 +490,7 @@ if ($role == '2' && $latest_user_diagnosis)
                             <div class="spk-link-card border rounded">
                                 <div class="d-flex justify-content-between align-items-center px-3 py-3 px-md-3 py-md-3">
                                     <div>
-                                        <h6 class="my-md-0 fw-bold">Riwayat Diagnosis</h6>
+                                        <h6 class="my-md-0 fw-bold">Riwayat Deteksi Dini</h6>
                                         <div class="small text-muted">Lihat semua hasil deteksi</div>
                                     </div>
                                     <i class="ti ti-arrow-right"></i>

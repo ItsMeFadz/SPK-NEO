@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Hasil Diagnosis</title>
+    <title>Hasil Deteksi Dini</title>
     <style>
         @page {
             margin: 18mm 14mm;

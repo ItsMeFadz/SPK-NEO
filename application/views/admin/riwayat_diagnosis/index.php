@@ -1,6 +1,6 @@
 <div class="card">
     <div class="d-flex justify-content-between align-items-center">
-        <h5 class="card-header">Riwayat Diagnosis</h5>
+        <h5 class="card-header">Riwayat Deteksi Dini</h5>
     </div>
     <div class="px-3" id="dataPasienSearchSection" data-search-url="<?= base_url('riwayatDiagnosis/search') ?>">
         <input type="text" id="searchInput" class="form-control form-control-sm w-100 mb-2"
@@ -37,7 +37,7 @@
                     <th>Nama</th>
                     <th class="text-center">Umur</th>
                     <th class="text-center">Alamat</th>
-                    <th class="text-center">Tanggal Diagnosis</th>
+                    <th class="text-center">Tanggal Deteksi Dini</th>
                     <th class="text-center">Tingkat Risiko</th>
                     <th class="text-center">Status Risiko</th>
                     <th class="text-center">Aksi</th>
@@ -88,7 +88,7 @@
                 <?php else: ?>
                     <tr>
                         <td colspan="8" class="text-center text-muted py-4">
-                            Belum ada data riwayat diagnosis.
+                            Belum ada data riwayat deteksi dini.
                         </td>
                     </tr>
                 <?php endif; ?>

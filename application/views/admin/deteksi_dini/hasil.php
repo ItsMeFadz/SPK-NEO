@@ -1,4 +1,4 @@
-<!-- Hasil Diagnosis -->
+<!-- Hasil Deteksi Dini -->
 <div class="card card-action mb-4 overflow-hidden shadow">
     <div class="card-header d-flex align-items-center justify-content-between flex-wrap">
         <div class="d-flex align-items-center">
@@ -16,7 +16,7 @@
             </a>
             <a href="<?= base_url('deteksiDini') ?>" class="btn btn-label-dark">
                 <i class="ti ti-refresh ti-xs me-1"></i>
-                <span class="d-none d-md-inline ms-1">Diagnosis Ulang</span>
+                <span class="d-none d-md-inline ms-1">Deteksi Dini Ulang</span>
             </a>
         </div>
 

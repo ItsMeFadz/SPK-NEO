@@ -39,7 +39,7 @@
             <li class="menu-item <?= ($menu == 'riwayatDiagnosis') ? 'active' : '' ?>">
                 <a href="<?= base_url('riwayatDiagnosis') ?>" class="menu-link">
                     <i class="menu-icon tf-icons ti ti-list-check"></i>
-                    <div data-i18n="Riwayat Diagnosis">Riwayat Diagnosis </div>
+                    <div data-i18n="Riwayat Deteksi Dini">Riwayat Deteksi Dini </div>
                 </a>
             </li>
             <li class="menu-item <?= ($menu == 'edukasi') ? 'active' : '' ?>">
